@@ -1,0 +1,250 @@
+\documentclass[12pt]{article}
+\usepackage{longtable}
+\usepackage[fleqn]{amsmath}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset  -.85in
+
+\pagestyle{empty}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems  
+\\ Homework 3 \& 4 Solutions
+}
+\end{center}
+
+\setlength{\unitlength}{1in}
+\noindent \textbf{Solutions}:
+
+\noindent It is acceptable to provide solutions that are not optimized, or have unnecessary steps. 
+
+\begin{enumerate}
+	\item Find the names of suppliers who supply some red part.
+
+\begin{itemize}
+\item RA Strategy: \\
+Bridge Parts and Suppliers through Catalog using Natural Join. Suppliers relation is needed here because we need their name. Filter out red parts before or after Join.
+\item RA: 
+\\ $\pi_{sname}(\sigma_{color='red'}(Parts) \bowtie Catalog \bowtie Suppliers)$
+\item RC Strategy: \\
+Associate a bound variable for a red Parts tuple, to a bound variable for a Catalog tuple, to a bound variable for a Suppliers tuple by equating ids. Finally, link the Suppliers variable to the free variable through the sname attribute.
+\item TRC:
+\begin{multline*}
+\{T|\exists S \in Suppliers(T.sname = S.sname \wedge \\
+	\hspace{1cm}\exists C \in Catalog(S.sid = C.sid \wedge \\
+	\hspace{2cm}\exists P \in Parts(P.pid = C.pid \wedge P.color=``red")))\} \\
+\end{multline*}
+\end{itemize}
+	
+	\item Find the sids of suppliers who supply some red or green part.
+	
+\begin{itemize}
+\item RA Strategy: \\
+Use a disjunction in the selection condition or a union to combine both filters. Suppliers is no longer needed since the Catalog relation already has the sid. 
+\item RA: \\
+$\pi_{sid}(\sigma_{color=``red" \vee color=``green"}(Parts) \bowtie Catalog)$
+\item RC Strategy: \\
+DRC often requires less explicit equation. Use pre-existing bound variables and constants to define quantifiers without needing to use equality. While Pn is defined twice, the second bound variable is not the same as the first.
+\item DRC:
+\begin{multline*}
+\{<Si>|\exists<Si,Pi,Co> \in Catalog( \\
+	\hspace{1cm}\exists <Pi,Pn,``red"> \in Parts \vee \\
+	\hspace{1cm}\exists <Pi,Pn,``green"> \in Parts)\} \\
+\end{multline*}
+\end{itemize}
+
+	\item Find the sids of suppliers who supply some red part or are at 221 Packer Street. 
+
+\begin{itemize}
+\item RA Strategy: \\
+A union is appropriate since the conditions involve attributes of different relations.
+\item RA: \\
+$\pi_{sid}(\sigma_{color=``red"}(Parts) \bowtie Catalog)\cup\pi_{sid}(\sigma_{address=``221 Packer Street"}(Suppliers))$
+\item RC Strategy: \\
+Define a bound variable for Parts inside Catalog to cover the first condition, and another bound variable for Suppliers to cover the second condition. The Catalog B.V. must be accessible to the Parts B.V., so the latter should be nested.
+\item TRC:
+\begin{multline*}
+\{T|\exists S \in Suppliers(T.sid = S.sid \wedge 
+		S.address=``221 Packer Street") \vee \\
+	\hspace{1cm}\exists C \in Catalog(T.sid = C.sid \wedge \\
+	\hspace{2cm}\exists P \in Parts(P.pid = C.pid \wedge P.color=``red"))\} \\
+\end{multline*}
+\end{itemize}
+	
+	\item Find the sids of suppliers who supply some red part and some green part. 
+	
+\begin{itemize}
+\item RA Strategy: \\
+Suppliers must belong to the set of suppliers that supply a red part AND the set that supply a green part to qualify. Since it has to belong to BOTH sets, we have to use the set intersection operation.
+\item RA: \\
+$\pi_{sid}(\sigma_{color=``red"}(Parts) \bowtie Catalog)\cap\pi_{sid}(\sigma_{color=``green"}(Parts) \bowtie Catalog)$
+\item RC Strategy: \\
+The existence of two entries for each potential supplier has to be checked. The supplier must offer a red Part in the Catalog, and it must also supply a green Part in the Catalog.
+\item DRC:
+\begin{multline*}
+\{<Si>|\exists <Si,Pi,Co> \in Catalog(\exists<Pi,Pn,``red"> \in Parts) \wedge \\
+	\hspace{1cm}\exists <Si,Pi,Co> \in Catalog(\exists<Pi,Pn,``green"> \in Parts)\} \\
+\end{multline*}
+\end{itemize}
+	
+	\item Find the sids of suppliers who supply every part. 
+
+\begin{itemize}
+\item RA Strategy: \\
+The most efficient way to find members of one relation that have a relationship with all members of another relation, or a given subset of the second relation is to use division. Set operations can be used to get the same result, but it is harder to do it that way. The relation you are dividing MUST contain every column in the divisor, so you should use projection to adjust the relations accordingly.
+\item RA: \\
+$\pi_{sid,pid}(Catalog)/\pi_{pid}(Parts)$
+\item RC Strategy: \\
+The usage of the word every tends to indicate the need for the universal quantifier. For every part, there should be a corresponding Catalog entry with a matching sid.
+\item TRC:
+\begin{multline*}
+\{T|\forall P \in Parts(\exists C \in Catalog(C.pid = P.pid \wedge C.sid = T.sid))\} \\
+\end{multline*}
+\end{itemize}	
+	
+	\item Find the sids of suppliers who supply every red part. 
+
+\begin{itemize}
+\item RA Strategy: \\
+The divisor should include all red parts, and only red parts. A selection should be applied BEFORE division to ensure this.
+\item RA: \\
+$\pi_{sid,pid}(Catalog)/\pi_{pid}(\sigma_{color=''red"}(Parts))$
+\item RC Strategy: \\
+We still use the universal quantifier in TRC, but add a condition to ignore non-red parts. If the part is red, we want the supplier to offer it in the Catalog. If the part is not red, it does not matter if the supplier sells it or not.
+\item DRC:
+\begin{multline*}
+\{<Si>|\forall <Pi,Pn,Cl> \in Parts(Cl  = ``red" \Rightarrow  \\
+	\hspace{1cm}\exists <Si,Pi,Co> \in Catalog)\} \\
+\end{multline*}
+\end{itemize}		
+	
+	\item Find the sids of suppliers who supply every red or green part. 
+	
+\begin{itemize}
+\item RA Strategy: \\
+Similar to the previous problem. If a part is either red or green, the supplier must sell it, so we are interested in suppliers that offer ALL red and ALL green parts. Easiest way to accomplish this is using a disjunction in the selection criteria for the previous solution.
+\item RA: \\
+$\pi_{sid,pid}(Catalog)/\pi_{pid}(\sigma_{color=''red" \vee color=''green"}(Parts))$
+\item RC Strategy: \\
+As in the corresponding Relational Algebra, the RC solution is almost the same as the previous answer. Just add another condition that includes green parts.
+\item TRC:
+\begin{multline*}
+\{T|\forall P \in Parts( (P.color  = ``red" \vee P.color  = ``green") \Rightarrow \\
+	\hspace{1cm}\exists C \in Catalog(C.pid = P.pid \wedge C.sid = T.sid))\} \\
+\end{multline*}
+\end{itemize}		
+	
+	\item Find the sids of suppliers who supply every red part or supply every green part. 
+
+\begin{itemize}
+\item RA Strategy: \\
+The difference between this item and the previous item is that we the supplier to sell all red parts OR all green parts. If the supplier sells all of one but not all of the other, it qualifies. If it sells all of both, it qualifies. We have two conditions that have different divisors. We can combine them with the union operation.
+\item RA: \\
+$\pi_{sid,pid}(Catalog)/\pi_{pid}(\sigma_{color=''red"}(Parts)) \cup \pi_{sid,pid}(Catalog)/\pi_{pid}(\sigma_{color=''green"}(Parts))$
+\item RC Strategy: \\
+We have two independent universal conditions, so we need two independent B.V.s to express the requirement properly.
+\item DRC:
+\begin{multline*}
+\{<Si>| \\ 
+	\hspace{1cm}\forall <Pi,Pn,Cl> \in Parts(Cl  = ``red" \Rightarrow \exists <Si,Pi,Co> \in Catalog) \vee \\ 
+	\hspace{1cm}\forall <Pi,Pn,Cl> \in Parts(Cl  = ``green" \Rightarrow \exists <Si,Pi,Co> \in Catalog)\} \\
+\end{multline*}
+\end{itemize}			
+	
+	\item Find pairs of sids such that the supplier with the first sid charges more for some part than the supplier with the second sid. 
+	
+\begin{itemize}
+\item RA Strategy: \\
+Sales data are contained in Catalog. We want to compare the cost that different suppliers charge for the same part. To compare costs, we need to put every entry in Catalog next to every other entry in Catalog, so we need to have Catalog be in a cross product with itself, and select cases where there is a difference in cost. We also need to ignore comparisons between the different products, and comparisons between the same supplier. A shorter way to do all of these at once is to use a Conditional Join. Since the joined table has redundant names, we should use positional notation or rename columns for projection. 
+\item RA: \\
+\begin{multline*}
+\rho(C1, Catalog) \\
+\rho(C2, Catalog) \\
+\pi_{1,4}(C1 \bowtie_{C1.sid \neq C2.sid \wedge C1.pid = C2.pid \wedge C1.cost > C2.cost} C2)\\
+\end{multline*}
+\item RC Strategy: \\
+We can compare two Catalog B.V.s to get the same result in RC.
+\item TRC:
+\begin{multline*}
+\{T|\exists C1 \in Catalog( \\
+	\hspace{1cm}\exists C2 \in Catalog( \\
+	\hspace{2cm}C1.sid \neq C2.sid \wedge C1.pid = C2.pid \wedge C1.cost > C2.cost \wedge \\
+	\hspace{2cm}C1.sid = T.sid1 \wedge C2.sid = T.sid2))\} \\
+\end{multline*}
+\end{itemize}			
+	
+	\item Find the pids of parts supplied by at least two different suppliers. 
+	
+\begin{itemize}
+\item RA Strategy: \\
+This is actually a simpler version of the previous item. To find price differences, we already had to find parts that were supplied by at least two different suppliers. We are not interested in prices, and we want pids instead of supplier information. 
+\item RA: \\
+\begin{multline*}
+\rho(C1, Catalog) \\
+\rho(C2, Catalog) \\
+\pi_{2}(C1 \bowtie_{C1.sid \neq C2.sid \wedge C1.pid = C2.pid} C2)\\
+\end{multline*}
+\item RC Strategy: \\
+Same approach, but DRC is less verbose since the individual attributes can be fixed.
+\item DRC:
+\begin{multline*}
+\{<Pi>|\exists <Si1,Pi,Co1> \in Catalog( \\
+	\hspace{1cm}\exists <Si2,Pi,Co2> \in Catalog(Si1 \neq Si2))\} \\
+\end{multline*}
+\end{itemize}		
+	
+	\item Find the pids of the most expensive parts supplied by suppliers named Yosemite Sham. 
+	
+
+\begin{itemize}
+\item RA Strategy: \\
+We're only interested in parts sold by Yosemite Sham. Since names are in the Suppliers relation, but costs are in Catalog, the first step will be to join the tables and filter out records only for the supplier we are interested in. In a previous problem, we needed to find price differences in the Catalog, which we did by joining Catalog to itself. If the price of one product is less than the other, it means that the product is NOT one of the most expensive parts available, since there is another part with a greater cost. Using set difference, we can remove all these cheaper parts from the set of all parts sold by Yosemite Sham. This leaves only parts which are not cheaper than any other part, which are the most expensive parts.
+\item RA: \\
+\begin{multline*}
+\rho(YSC1, Catalog \bowtie \sigma_{sname=``Yosemite Sham"}(Suppliers)) \\
+\rho(YSC2, Catalog \bowtie \sigma_{sname=``Yosemite Sham"}(Suppliers)) \\
+\rho(CHPP, \pi_{2}(YSC1 \bowtie_{YSC1.pid \neq YSC2.pid \wedge YSC1.cost < YSC2.cost} YSC1))\\
+\rho(ALLP, \pi_{pid}(YSC1))\\
+ALLP-CHPP\\
+\end{multline*}
+\item RC Strategy: \\
+A part qualifies if it is sold by Yosemite Sham, and there does NOT exist another part sold by Yosemite Sham more expensive than it.
+\item TRC:
+\begin{multline*}
+\{T|\exists C1 \in Catalog( \\
+	\hspace{1cm}T.pid = C1.pid \wedge \\
+	\hspace{1cm}\exists S \in Suppliers(S.sname = ``Yosemite Sham" \wedge S.sid = C1.sid \wedge \\
+	\hspace{2cm}\neg\exists C2 \in Catalog(C1.sid = C2.sid \wedge C2.cost > C1.cost)))\} \\
+\end{multline*}
+\end{itemize}	
+	
+	\item Find the pids of parts supplied by every supplier at less than \$200. (If any supplier either does not supply the part or charges more than \$200 for it, the part is not selected.)
+	
+\begin{itemize}
+\item RA Strategy: \\
+EVERY supplier? Use division by Suppliers, but only suppliers that sell all of their wares at prices less than \$200. Select to choose items in the catalog that fit the requirement. Alternatively, we can find suppliers that sell all parts first, and then use set difference to remove suppliers that sell ANY item at \$200 or more.  
+\item RA: \\
+\begin{multline*}
+\pi_{sid,pid}(\sigma_{cost<200}(Catalog))/\pi_{sid}(Suppliers)\\
+\\
+\pi_{sid,pid}(Catalog)/\pi_{sid}(Suppliers) - \pi_{sid}(\sigma_{cost \geq 200}(Catalog))\\
+\end{multline*}
+\item RC Strategy: \\
+Use the universal quantifier to make sure every supplier has an entry in the Catalog relation, and sells the part at less than 200.
+\item DRC:
+\begin{multline*}
+\{<Pi>|\forall <Si,Sn,Ad> \in Suppliers( \\
+	\hspace{1cm}\exists <Si,Pi,Co> \in Catalog(Co < 200))\} \\
+\end{multline*}
+\end{itemize}	
+
+\end{enumerate}
+
+
+\end{document}

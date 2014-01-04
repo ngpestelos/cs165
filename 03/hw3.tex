@@ -1,0 +1,65 @@
+\documentclass[12pt]{article}
+\usepackage{longtable}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset  -.85in
+
+\pagestyle{empty}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems  
+\\ Homework 3 - Relational Algebra
+}
+\end{center}
+
+\setlength{\unitlength}{1in}
+
+\begin{picture}(6,.1) 
+\put(0,0) {\line(1,0){6.25}}         
+\end{picture}
+
+\vskip.25in
+\noindent\textbf{Submission:} December 14, Class
+
+\vskip.25in
+\noindent \textbf{Requirements}:
+\begin{itemize}
+  \item Answer sheet labeled with your student number and name.
+\end{itemize}
+
+\vskip.25in
+\noindent \textbf{Problem}:
+\vskip.15in
+\noindent Consider the following schema:
+
+\begin{itemize}
+	\item[] Suppliers(\underline{sid}: integer, sname: string, address: string)
+	\item[] Parts(\underline{pid}: integer, pname: string, color: string)
+ 	\item[] Catalog(\underline{sid}: integer, \underline{pid}: integer, cost: real)
+\end{itemize}
+
+\noindent The key fields are underlined, and the domain of each field is listed after the field name. Therefore sid is the key for Suppliers, pid is the key for Parts, and sid and pid together form the key for Catalog. The Catalog relation lists the prices charged for parts by Suppliers. Write the following queries in relational algebra. Note that there may be more than one possible valid solution for each query. Answering with any valid solution will be sufficient to obtain marks for that query.
+
+\begin{enumerate}
+	\item Find the names of suppliers who supply some red part.
+	\item Find the sids of suppliers who supply some red or green part.
+	\item Find the sids of suppliers who supply some red part or are at 221 Packer Street. 
+	\item Find the sids of suppliers who supply some red part and some green part. 
+	\item Find the sids of suppliers who supply every part. 
+	\item Find the sids of suppliers who supply every red part. 
+	\item Find the sids of suppliers who supply every red or green part. 
+	\item Find the sids of suppliers who supply every red part or supply every green part. 
+	\item Find pairs of sids such that the supplier with the first sid charges more for some part than the supplier with the second sid. 
+	\item Find the pids of parts supplied by at least two different suppliers. 
+	\item Find the pids of the most expensive parts supplied by suppliers named Yosemite Sham. 
+	\item Find the pids of parts supplied by every supplier at less than \$200. (If any supplier either does not supply the part or charges more than \$200 for it, the part is not selected.)
+\end{enumerate}
+
+
+\end{document}

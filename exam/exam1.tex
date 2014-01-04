@@ -1,0 +1,404 @@
+% ANUfinalexam.tex (Version 2.0)
+% ===============================================================================
+% Australian National University Final Exam LaTeX template.
+% 2004; 2009, Timothy Kam, ANU School of Economics
+% Licence type: Free as defined in the GNU General Public Licence: http://www.gnu.org/licenses/gpl.html
+
+\documentclass[a4paper,12pt,leqno]{article}
+\usepackage[fleqn]{mathtools}
+\usepackage[labelformat=empty]{caption}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{tikz-er2}
+
+% Insert your course information here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\institution}{UNIVERSITY OF THE PHILIPPINES DILIMAN}
+\newcommand{\titlehd}{Database Systems}
+\newcommand{\examtype}{First Exam}
+\newcommand{\examdate}{January 11 2014}
+\newcommand{\examcode}{CS165}
+\newcommand{\writetime}{THREE Hours}
+\newcommand{\lastwords}{End of Examination}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setcounter{MaxMatrixCols}{10}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+% ANU Exams Office mandated margins and footer style
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{16cm}
+\pagestyle{fancy}
+\lhead{} 
+\chead{} 
+\rhead{} 
+\lfoot{} 
+\cfoot{\footnotesize{Page \thepage \ of \pageref{finalpage} -- \titlehd \ (\examcode)}} 
+\rfoot{} 
+
+% DEPRECATED: ANU Exams Office mandated margins and footer style
+%\setlength{\topmargin}{0cm}
+%\setlength{\textheight}{9.25in}
+%\setlength{\oddsidemargin}{0.0in}
+%\setlength{\evensidemargin}{0.0in}
+%\setlength{\textwidth}{16cm}
+%\pagestyle{fancy}
+%\lhead{} %left of the header
+%\chead{} %center of the header
+%\rhead{} %right of the header
+%\lfoot{} %left of the footer
+%\cfoot{} %center of the footer
+%\rfoot{Page \ \thepage \ of \ \pageref{finalpage} \\
+%       \texttt{\examcode}} %Print the page number in the right footer
+
+\renewcommand{\headrulewidth}{0pt} %Do not print a rule below the header
+\renewcommand{\footrulewidth}{0pt}
+
+
+\begin{document}
+
+% Title page
+
+\begin{center}
+%\vspace{5cm}
+\large\textbf{\institution}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\textit{ \examtype -- \examdate}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\large\textbf{\titlehd}
+\end{center}
+
+\begin{center}
+\large\textbf{\examcode}
+\end{center}
+\vspace{4cm}
+
+\begin{center}
+\textit{Writing Time:  \writetime}
+\end{center}
+
+% End title page
+
+\newpage
+\paragraph{\textbf{Section 1: ERD Construction [10 points]}\\}
+The university debate society has contacted you to write an application to manage small debate workshops. They have no prior experience in dealing with software projects, so have not prepared any formal specifications. You have decided to begin by constructing an ERD for the data model first, which you can then use as a starting point for an simple prototype. From interviews with their representatives, you have determined the initial requirements below. Construct an ERD from these requirements. Should you decide to break from conventions we have used in class, explicitly indicate what your symbols mean.
+
+\begin{enumerate}
+
+\item Each participating contingent will have a name and a shorthand abbreviation. For example: (U.P. Diliman, UPD), (Ateneo de Manila University, ADMU). The abbreviation should be unique.
+
+\item Each contingent will be sending at least one team. Each team must belong to one contingent at most. Some teams may not be part of a registered contingent. Teams will have unique names. 
+
+\item Each team will contain exactly three member debaters. Every debater must belong to exactly one team. A debater's name, contact number, email, year level,  and major should be recorded during registration. Debaters will also be issued a unique identifying number at this time. 
+
+\item All contingents will also be represented by at least one judge. Judges can be at most part of one contingent, though some neutral judges attending may not be part of any contingent. Judges will be issued a unique numerical id, and their names should be recorded.
+
+\item In the workshop, teams will debate one another for practice in pairs. Teams are not required to participate in debates even though they have registered, but will typically take part in multiple debates during the course of the workshop, and should not face another team more than once. For each debate, the debate topic and venue should be recorded.
+
+\item A set of one or more judges will adjudicate a debate. Every debate must have at least one judge.
+
+\item Contingents may also bring some spectators. Each spectator must be associated with one identifying contingent. Spectators are not such an important part of the workshop records. The names and relationship (family, friend, etc.) of spectators to the contingent should be kept in the database, and the name should be included as part of the spectator's key. If a contingent is later removed from the records, spectators affiliated with the contingent should be automatically expunged as well. 
+
+\end{enumerate}
+
+\newpage
+\paragraph{\textbf{Section 2: ERD Interpretation [10 points]}\\}
+Given in the following page is an ERD representing Internet usage in a university. The system is interested in the assignment of I.P. addresses to members of the community. Faculty members are also allowed to register one guest for an I.P. address at a time. Answer each of the questions following the ERD completely. Each is worth 2 points.
+
+For the ERD, we follow the conventions shown below for key constraints, participation constraints and weak entities.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[entity] (ent1) {Entity1};
+\node[relationship] (rel) [right of=ent1] {Rel} edge node[auto] {1P} (ent1);
+\node[entity] (ent2) [right of=rel] {Entity2} edge node[auto] {1P} (rel);
+\end{tikzpicture}
+\caption{One-To-One; Partial-Partial}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[entity] (ent1) {Entity1};
+\node[relationship] (rel) [right of=ent1] {Rel} edge node[auto] {MT} (ent1);
+\node[entity] (ent2) [right of=rel] {Entity2} edge node[auto] {MT} (rel);
+\end{tikzpicture}
+\caption{Many-To-Many; Total-Total}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[entity] (ent1) {Entity1};
+\node[relationship] (rel) [right of=ent1] {Rel} edge node[auto] {1T} (ent1);
+\node[entity] (ent2) [right of=rel] {Entity2} edge node[auto] {MP} (rel);
+\end{tikzpicture}
+\caption{One-To-Many; Total-Partial}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[ident relationship] (rel) {Rel};
+\node[weak entity] (ent2) [right of=rel] {Entity2} edge[total] node[auto] {1} (rel);
+\end{tikzpicture}
+\caption{Weak Entity (One)}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[ident relationship] (rel) {Rel};
+\node[weak entity] (ent2) [right of=rel] {Entity2} edge[total] node[auto] {M} (rel);
+\end{tikzpicture}
+\caption{Weak Entity (Many)}
+\end{figure}
+
+\newpage 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[entity] (ipadd) {IPAddress};
+\node[attribute] (add2) [left of=ipadd] {\key{add2}} edge (ipadd);
+\node[attribute] (add1) [above of=add2, node distance=3em] {\key{add1}} edge (ipadd);
+\node[attribute] (add3) [below of=add2, node distance=3em] {\key{add3}} edge (ipadd);
+\node[attribute] (add4) [above of=ipadd, node distance=3em] {\key{add4}} edge (ipadd);
+\node[relationship] (assignment) [right of=ipadd] {Assigned} edge node[auto] {MP} (ipadd);
+\node[entity] (user) [right of=assignment] {User} edge node[auto] {1P} (assignment);
+\node[attribute] (uid) [above of=user, node distance=3em] {\key{uid}} edge (user);
+\node[attribute] (name) [right of=user] {name} edge (user);
+\node[isa] (isa) [below of=assignment] {ISA} edge (user);
+\node[entity] (faculty) [left of=isa] {Faculty} edge (isa);
+\node[attribute] (dept) [left of=faculty] {dept} edge (faculty);
+\node[attribute] (room) [above of=faculty, node distance=3em] {room} edge (faculty);
+\node[entity] (student) [right of=isa] {Students} edge (isa);
+\node[attribute] (studNo) [right of=student] {studNo} edge (student);
+\node[attribute] (mobile) [above of=student, node distance=3em] {mobile} edge (student);
+\node[attribute] (email) [below of=student, node distance=3em] {email} edge (student);
+\node[ident relationship] (visits) [below of=faculty] {Visits} edge node[auto] {1P} (faculty);
+\node[weak entity] (guest) [right of=visits] {Guest} edge[total] node[auto] {1}(visits);
+\node[attribute] (gname) [right of=guest] {name} edge (guest);
+\end{tikzpicture}
+\caption{I.P. Assignment System}
+\end{figure}
+
+
+\begin{enumerate}
+\item 
+IPAddress(\underline{add1}: byte, \underline{add2}: byte, \underline{add3}: byte, \underline{add4}: byte) \\\\
+The IPAddress entity set can be converted into the relational schema given above. If the tuple (128,0,0,1) is a member of this relation at an instance, would (1,0,0,128) also represent a valid member of the same instance? Why or why not?
+
+\item Convert the Faculty entity set in the ERD into a relational schema. 
+
+\item List the entity sets that are in total participation in any relationship.
+
+\item{\it Partial keys} are subsets of primary keys. The Guest entity set in the ERD has no primary key because it is a weak entity set. Weak entity sets can also be assigned {\it weak partial keys} by underling an attribute, including at as a member of the sets' primary key. Some conventions even emphasize these by using a dashed underline to distinguish these from regular primary keys. What is the advantage of making the name attribute a weak partial key for Guest? ({\it Hint: } How is the key constraint for Guest affected by a weak partial key?)
+
+\item A {\it candidate key} is any collection of attributes that can unique identify an entity. In other words, it is a potential primary key. Consider the relation you would have by converting the Student entity set; the relation's primary key is composed of one attribute out of five. In the real world however, student numbers, mobile numbers and email addresses are all typically used by only one person. How many total possible candidate keys for the Student relation are there if these three attributes were restricted to be unique for possible records? ({\it Hint: } When a unique attribute, and a non-unique attribute are put together, is the combination unique?)
+
+\end{enumerate}
+
+\newpage
+\paragraph{\textbf{Section 3: Reading Queries [10 points]}\\}
+Below are tables representing relations in a medical appointment system. The next page contains Relational Algebra queries, Tuple Relational Calculus queries, and Domain Relational Calculus queries. From the tables, extract a result-set that will satisfy each given query. Express your result-sets as tables. Be sure to indicate the correct header for each column. \\
+
+\begin{center}
+  \begin{tabular}{| l | c | r |}
+  	\hline
+	\multicolumn{3}{|c|}{Doctors} \\
+    \hline
+    did & dname & spec \\ \hline
+    1 & Black Jack & Paediatrics \\
+    2 & Gregory House & Pathology \\
+    3 & Tony Chopper & Pathology \\
+    4 & Beverly Crusher & Cardiology \\
+    5 & Stephen Strange & Surgery \\
+    6 & Leonard McCoy & Endocrinology \\
+    7 & Trafalgar Law & Cardiology \\
+    8 & Kenzo Tenma & Surgery \\
+    9 & Mikoto Saijou & Radiology \\
+    10 & Tex Farzenberg & Neurology \\ 
+    11 & Sherman Cottle & Geriatrics \\ 
+    12 & John Watson & Neurology \\ 
+    13 & Derek Styles & Surgery \\ 
+    \hline
+  \end{tabular}
+  \begin{tabular}{| l | c | r |}
+  	\hline
+	\multicolumn{3}{|c|}{Patients} \\
+    \hline
+    pid & pname & age \\ \hline
+    1 & Alexandra DeWitt & 26 \\
+    2 & Damien Wayne & 10 \\
+    3 & Oliver Queen & 34 \\
+    4 & Dinah Lance & 31 \\
+    5 & Jason Todd & 19 \\
+    6 & Maxwell Lord & 47 \\
+    7 & Stephanie Brown & 17 \\
+    8 & Scott Free & 28 \\
+    9 & Barry Allen & 33 \\
+    10 & Douglas Ramsey & 18 \\
+    11 & Ben Parker & 61 \\
+    12 & Carol Danvers & 32 \\
+    13 & Thaddeus Ross & 57 \\
+    14 & Victor Creed & 43 \\
+    \hline
+  \end{tabular}
+\end{center}
+\begin{center}
+  \begin{tabular}{| l | c | c | r |}
+  	\hline
+	\multicolumn{4}{|c|}{Appointments} \\
+    \hline
+    did & pid & sched & diag \\ \hline
+    11 & 11 & 12-09-2014 & Cold \\
+    1 & 7 & 12-10-2014 & Flu \\
+    11 & 13 & 12-11-2014 & Arthritis \\
+    13 & 8 & 12-11-2014 & Appendicitis \\
+    6 & 10 & 12-15-2014 & Goiter \\
+    3 & 4 & 12-16-2014 & Hepatitis A \\
+    12 & 6 & 12-16-2014 & Alzheimer's Disease \\
+    1 & 2 & 12-19-2014 & Cold \\
+    8 & 5 & 12-19-2014 & Arm Fracture \\    
+    7 & 9 & 12-22-2014 & Endocarditis \\    
+    7 & 3 & 12-22-2014 & Diabetes \\    
+    11 & 14 & 12-22-2014 & Endocarditis \\    
+    7 & 14 & 12-22-2014 & Endocarditis \\    
+    9 & 13 & 12-29-2014 & Cancer \\
+    2 & 5 & 12-31-2014 & Dengue Fever \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\newpage
+\begin{flalign}\tag{1}
+\begin{split}
+&\pi_{dname}(\sigma_{spec=``Pathology"}(Doctors))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{2}
+\begin{split}
+&\{T|\exists P \in Patients(P.age > 50 \wedge T.pname = P.pname)\}
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{3}
+\begin{split}
+&\pi_{dname}(Doctors \bowtie \sigma_{sched = 12-11-2014} (Appointments)))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{4}
+\begin{split}
+&\{<dg>|\exists <di,pi,sc,dg> \in Appointments(\\
+&\hspace{1cm}\exists <pi,``Damien Wayne",ag> \in Patients)\}
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{5}
+\begin{split}
+&\pi_{dname}(Doctors \bowtie Appointments \bowtie \sigma_{pname=``Alexandra DeWitt"}(Patients)) \cap \\ &\pi_{dname}(Doctors \bowtie \sigma_{sched < 12-15-2014}(Appointments))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{6}
+\begin{split}
+&\pi_{diag}(\sigma_{spec=``Radiology"}(Doctors) \bowtie Appointments \bowtie Patients) \cup \\ 
+&\pi_{diag}(\sigma_{age > 33 \wedge sched > 12-25-2014}(Appointments \bowtie Patients)) - \\ 
+&\pi_{diag}(\sigma_{pid \neq 13}(Appointments))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{7}
+\begin{split}
+&\pi_{dname, diag}(Doctors \bowtie Appointments) / \pi_{diag}(\sigma_{diag=``Cold" \vee diag=``Endocarditis"}(Appointments))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{8}
+\begin{split}
+&\{<di>|\forall <pi,pn,ag> \in Patients( (pi > 12) \Rightarrow \\
+&\hspace{1cm}\exists <di,pi,sc,dg> \in Appointments)\} \\
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{9}
+\begin{split}
+&\rho(D1, \sigma_{did < 5}(Doctors)) \\
+&\rho(D2, \sigma_{4 < did \wedge did < 9}(Doctors)) \\
+&\pi_{2,5}(D1 \bowtie_{D1.3=D2.3} D2)
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{10}
+\begin{split}
+&\{T|\exists A1 \in Appointments(\\
+&\hspace{1cm}\exists A2 \in Appointments(\\
+&\hspace{2cm}A1.sched < A2.sched \wedge A1.diag = A2.diag \wedge A1.diag = T.diag ))\}
+\end{split}
+\end{flalign}
+
+\newpage
+\paragraph{\textbf{Section 4: Writing Queries [10 points]}\\}
+\noindent The schema for a system that manages an airline's records is given below. The Employees records contains information on all the company's employees, including pilots. Pilots must be certified to handle an aircraft. If a flight's distance is less than or equal to the range of an aircraft, the aircraft may be used for that flight. 
+
+\begin{itemize}
+	\item[] Flights(\underline{flno}: integer, frm: string, to: string, dist: integer, dep: time, arr: time)
+	\item[] Aircraft(\underline{aid}: integer, aname: string, range: integer)
+ 	\item[] Certified(\underline{eid}: integer, \underline{aid}: integer)
+ 	\item[] Employees(\underline{eid}: integer,  ename: string, salary: integer)
+\end{itemize}
+
+\noindent For each of the queries following the schema, formulate an equivalent in Relational Algebra, and in Relational Calculus. For the query in Relational Calculus, you can use TRC or DRC. ``Boeing" is the name of an aircraft. Distances and ranges are in miles.
+
+\begin{enumerate}
+\item Find the names of pilots certified for any Boeing aircraft.
+\item Find the {\it eids} of pilots certified for every Boeing aircraft.
+\item Find the {\it aids} of aircraft that can be used on direct non-stop flights from Manila to Tokyo.
+\item Find the names of pilots who can operate planes with a range greater than 3000 miles
+but are not certified on any Boeing aircraft.
+\item Find the {\it eids} of employees with the highest salaries.
+\end{enumerate}
+
+\begin{center}
+\vspace{3cm}
+--------- \textit{\lastwords} ---------
+\end{center}
+
+
+\label{finalpage}
+
+\end{document}

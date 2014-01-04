@@ -1,0 +1,346 @@
+% ANUfinalexam.tex (Version 2.0)
+% ===============================================================================
+% Australian National University Final Exam LaTeX template.
+% 2004; 2009, Timothy Kam, ANU School of Economics
+% Licence type: Free as defined in the GNU General Public Licence: http://www.gnu.org/licenses/gpl.html
+
+\documentclass[a4paper,12pt,leqno]{article}
+\usepackage[fleqn]{mathtools}
+\usepackage[labelformat=empty]{caption}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{tikz-er2}
+
+% Insert your course information here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\institution}{UNIVERSITY OF THE PHILIPPINES DILIMAN}
+\newcommand{\titlehd}{Database Systems}
+\newcommand{\examtype}{First Exam Answers}
+\newcommand{\examcode}{CS165}
+\newcommand{\writetime}{THREE Hours}
+\newcommand{\lastwords}{End of Examination}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setcounter{MaxMatrixCols}{10}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+% ANU Exams Office mandated margins and footer style
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{16cm}
+\pagestyle{fancy}
+\lhead{} 
+\chead{} 
+\rhead{} 
+\lfoot{} 
+\cfoot{\footnotesize{Page \thepage \ of \pageref{finalpage} -- \titlehd \ (\examcode)}} 
+\rfoot{} 
+
+% DEPRECATED: ANU Exams Office mandated margins and footer style
+%\setlength{\topmargin}{0cm}
+%\setlength{\textheight}{9.25in}
+%\setlength{\oddsidemargin}{0.0in}
+%\setlength{\evensidemargin}{0.0in}
+%\setlength{\textwidth}{16cm}
+%\pagestyle{fancy}
+%\lhead{} %left of the header
+%\chead{} %center of the header
+%\rhead{} %right of the header
+%\lfoot{} %left of the footer
+%\cfoot{} %center of the footer
+%\rfoot{Page \ \thepage \ of \ \pageref{finalpage} \\
+%       \texttt{\examcode}} %Print the page number in the right footer
+
+\renewcommand{\headrulewidth}{0pt} %Do not print a rule below the header
+\renewcommand{\footrulewidth}{0pt}
+
+
+\begin{document}
+
+% Title page
+
+\begin{center}
+%\vspace{5cm}
+\large\textbf{\institution}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\textit{ \examtype}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\large\textbf{\titlehd}
+\end{center}
+
+\begin{center}
+\large\textbf{\examcode}
+\end{center}
+\vspace{4cm}
+
+\begin{center}
+\textit{Writing Time:  \writetime}
+\end{center}
+
+% End title page
+
+\newpage
+\paragraph{\textbf{Section 1: ERD Construction [10 points]}\\}
+Deviations will be considered on a case-to-case basis. The most important consideration is complete representation of all constraints contained in the requirements.
+
+\begin{figure}[hb]
+\centering
+\begin{tikzpicture}[node distance=8em]
+\node[entity] (contingent) {Contingents};
+\node[attribute] (shorthand) [left of=contingent] {\key{shorthand}} edge (contingent);
+\node[attribute] (cname) [right of=contingent] {name} edge (contingent);
+\node[relationship] (send) [below of=contingent, node distance=5em] {Send} edge node[auto] {1T} (contingent);
+\node[relationship] (contains) [right of=send] {Contains};
+\node[entity] (debater) [right of=contains] {Debaters} edge node[auto] {3T} (contains);
+\node[attribute] (major) [right of=debater] {major} edge (debater);
+\node[attribute] (year) [above of=major, node distance=3em] {year} edge (debater);
+\node[attribute] (dname) [below of=major, node distance=3em] {name} edge (debater);
+\node[attribute] (dcontact) [below of=dname, node distance=3em] {contact} edge (debater);
+\node[attribute] (demail) [below of=debater, node distance=3em] {email} edge (debater);
+\node[attribute] (did) [above of=debater, node distance=3em] {\key{id}} edge (debater);
+\node[entity] (team) [below of=contains, node distance=6em] {Teams} edge node[auto] {MP} (send) edge node[auto] {1T} (contains);
+\node[attribute] (tname) [right of=team] {\key{name}} edge (team);
+\node[relationship] (debates) [below of=team, node distance=6em] {Debates};
+\draw (team.315) edge node[auto] {MP} (debates.45) (team.225) edge node[auto,swap] {MP} (debates.135);
+\node[attribute] (topic) [below of=debates, node distance=5em] {topic} edge (debates);
+\node[attribute] (venue) [right of=debates] {venue} edge (debates);
+\node[rectangle, draw=gray, fit=(team) (debates) (tname) (venue) (topic), inner sep=0.25em, dashed] {};
+\node[relationship] (represented) [left of=send] {Rep'dBy} edge node[auto] {1T} (contingent);
+\node[entity] (judge) [below of=represented, node distance=6em] {Judges} edge node[auto] {MP} (represented);
+\node[attribute] (jid) [right of=judge] {\key{id}} edge (judge);
+\node[attribute] (jname) [below of=judge, node distance=5em] {name} edge (judge);
+\node[relationship] (adj) [left of=debates] {Adj} edge node[auto] {MP} (judge) edge node[auto] {MT} (debates);
+\node[ident relationship] (broughtby) [above of=contingent, node distance=7em] {BroughtBy} edge node[auto] {1P} (contingent);
+\node[weak entity] (spectator) [right of=broughtby] {Spectators} edge[total] node[auto] {M} (broughtby);
+\node[attribute] (sname) [right of=spectator] {\key{name}} edge (spectator);
+\node[attribute] (rel) [below of=sname, node distance=3em] {relationship} edge (spectator);
+
+
+\end{tikzpicture}
+\caption{Debate Workshop ERD}
+\end{figure}
+
+\newpage
+\paragraph{\textbf{Section 2: ERD Interpretation [10 points]}\\}
+Answers other than the ones provided below will be considered on a case-to-case basis.
+
+
+\begin{enumerate}
+\item 
+Yes, because a collection primary key only ensures that the combination of attributes is unique, and not each attribute in the collection.
+
+\item
+Faculty(\underline{uid}, name, department, roomNum)
+
+\item
+The only one is Guest, because it's a weak entity. Weak entities have total participation in their identifying relationship. 
+
+\item
+It becomes possible to have a one-to-many relationship between Faculty and Guest. In other words, a faculty member can allow multiple visiting guests to use the Internet at the same time, on different devices. 
+
+\item Any superset of a candidate key is also a candidate key, because it is also unique. Only the name attribute on its own is not a candidate key, but the combination of this attribute and any other candidate key is still a candidate key. We can count the candidate keys by counting all keys and then removing 1 non-key (name). Included are keys that involve all 5 attributes, 4 attributes, 3 attributes, 2 attributes, and 1 attribute, excluding the name attribute from keys with 1 attribute.
+
+$${5\choose 5} + {5\choose 4} + {5\choose 3} + {5\choose 2} + {5\choose 1} - 1$$
+$$1 + 5 + 10 + 10 + 5 - 1$$
+$$30$$
+
+\end{enumerate}
+
+\newpage
+\paragraph{\textbf{Section 3: Reading Queries [10 points]}\\}
+	The order of rows in the tables below is irrelevant. Typos and other minor errors will be accepted with full marks. Headers other than the ones given below will be considered on a case-to-case basis.
+
+\begin{enumerate}
+\item 
+\begin{tabular}{| l |}
+    \hline
+    dname \\ \hline
+    Gregory House \\ 
+    Tony Chopper \\ 
+    \hline
+  \end{tabular}
+
+\item 
+\begin{tabular}{| l |}
+    \hline
+    pname \\ \hline
+    Ben Parker \\ 
+    Thaddeus Ross \\ 
+    \hline
+  \end{tabular}
+  
+\item 
+\begin{tabular}{| l |}
+    \hline
+    dname \\ \hline
+    Sherman Cottle \\ 
+    Derek Styles \\ 
+    \hline
+  \end{tabular}
+  
+\item 
+\begin{tabular}{| l |}
+    \hline
+    diag \\ \hline
+    Cold \\ 
+    \hline
+  \end{tabular}  
+
+\item 
+\begin{tabular}{| l |}
+    \hline
+    dname \\ \hline
+  \end{tabular} 
+
+\item
+\begin{tabular}{| l |}
+    \hline
+    diag \\ \hline
+    Cancer \\ 
+    \hline
+  \end{tabular}  
+
+\item 
+\begin{tabular}{| l |}
+    \hline
+    dname \\ \hline
+    Sherman Cottle \\ 
+    \hline
+  \end{tabular}
+  
+\item 
+\begin{tabular}{| l |}
+    \hline
+    did \\ \hline
+    11 \\ 
+    \hline
+  \end{tabular}
+
+\item 
+\begin{tabular}{| l | r |}
+    \hline
+    2 & 5 \\ \hline
+    Beverly Crusher & Trafalgar Law \\ 
+    \hline
+  \end{tabular}
+
+\item 
+\begin{tabular}{| l |}
+    \hline
+    diag \\ \hline
+    Cold \\ 
+    \hline
+  \end{tabular}  
+  
+\end{enumerate}
+
+\newpage
+\paragraph{\textbf{Section 4: Writing Queries [10 points]}\\}
+\noindent There are many possible queries that can be written equivalently to the ones shown below. Any equivalent query will get full marks. 
+
+\begin{flalign}\tag{1 - RA}
+\begin{split}
+&\pi_{ename}(Employees \bowtie Certified \bowtie \sigma_{aname=``Boeing"}(Aircrafts))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{1 - RC}
+\begin{split}
+&\{T|\exists E \in Employees(E.ename = T.ename \wedge\\
+&\hspace{1cm}\exists C \in Certified(E.eid = C.eid \wedge \\
+&\hspace{2cm}\exists A \in Aircrafts(A.aid = C.aid \wedge A.aname = ``Boeing")))\}
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{2 - RA}
+\begin{split}
+&Certified / \pi_{aid}(\sigma_{aname = ``Boeing"}(Aircrafts))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{2 - RC}
+\begin{split}
+&\{T|\forall A \in Aircrafts(A.aname = ``Boeing" \Rightarrow \\
+&\hspace{1cm}\exists C \in Certified(A.aid = C.aid \wedge C.eid = T.eid))\}
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{3 - RA}
+\begin{split}
+&\pi_{aid}(\sigma_{frm = ``Manila" \wedge to = ``Tokyo"}(Flights) \bowtie_{range > dist} Aircrafts)
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{3 - RC}
+\begin{split}
+&\{T|\exists F \in Flights( F.frm = ``Manila" \wedge F.to = ``Tokyo" \wedge \\
+&\hspace{1cm}\exists A \in Aircrafts(A.aid = T.aid \wedge A.range > F.dist))\}
+\end{split}
+\end{flalign}
+
+\newpage
+
+\begin{flalign}\tag{4 - RA}
+\begin{split}
+&\rho(BoeingCert, \pi_{eid}(Certified \bowtie \sigma_{aname=``Boeing"}(Aircrafts)))\\
+&\rho(3KMilesCert, \pi_{eid}(Certified \bowtie \sigma_{range>3000}(Aircrafts)))\\
+& \pi_{ename}(Employees \bowtie (3KMilesCert - BoeingCert))
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{4 - RC}
+\begin{split}
+&\{T|\exists E \in Employees( E.ename = T.ename \wedge \\
+&\hspace{1cm}\exists C \in Certified(E.eid = C.eid \wedge \\
+&\hspace{2cm}\exists A \in Aircrafts(A.range > 3000 \wedge A.aid = C.aid))\wedge \\
+&\hspace{1cm}\neg\exists C \in Certified(E.eid = C.eid \wedge \\
+&\hspace{2cm}\exists A \in Aircrafts(A.aname = ``Boeing" \wedge A.aid = C.aid))) \}
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{5 - RA}
+\begin{split}
+&\pi_{eid}(Employees) - \pi_{1}(Employees \bowtie_{4 < 6} Employees)
+\end{split}
+\end{flalign}
+
+\begin{flalign}\tag{5 - RC}
+\begin{split}
+&\{T|\exists E1 \in Employees( E1.eid = T.eid \wedge \\
+&\hspace{1cm}\neg\exists E2 \in Employees(E2.salary > E1.salary))\}
+\end{split}
+\end{flalign}
+
+\label{finalpage}
+
+\end{document}

@@ -330,14 +330,14 @@ $$30$$
 
 \begin{flalign}\tag{5 - RA}
 \begin{split}
-&\pi_{eid}(Employees) - \pi_{1}(Employees \bowtie_{4 < 6} Employees)
+&\pi_{eid}(Employees) - \pi_{1}(Employees \bowtie_{4 > 6} Employees)
 \end{split}
 \end{flalign}
 
 \begin{flalign}\tag{5 - RC}
 \begin{split}
 &\{T|\exists E1 \in Employees( E1.eid = T.eid \wedge \\
-&\hspace{1cm}\neg\exists E2 \in Employees(E2.salary > E1.salary))\}
+&\hspace{1cm}\neg\exists E2 \in Employees(E2.salary < E1.salary))\}
 \end{split}
 \end{flalign}
 

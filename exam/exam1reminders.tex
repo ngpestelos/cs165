@@ -1,0 +1,143 @@
+% ANUfinalexam.tex (Version 2.0)
+% ===============================================================================
+% Australian National University Final Exam LaTeX template.
+% 2004; 2009, Timothy Kam, ANU School of Economics
+% Licence type: Free as defined in the GNU General Public Licence: http://www.gnu.org/licenses/gpl.html
+
+\documentclass[a4paper,12pt,leqno]{article}
+\usepackage[fleqn]{mathtools}
+\usepackage[labelformat=empty]{caption}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{tikz-er2}
+
+% Insert your course information here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\institution}{UNIVERSITY OF THE PHILIPPINES DILIMAN}
+\newcommand{\titlehd}{Database Systems}
+\newcommand{\examtype}{First Exam Answers}
+\newcommand{\examcode}{CS165}
+\newcommand{\writetime}{THREE Hours}
+\newcommand{\lastwords}{End of Examination}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\setcounter{MaxMatrixCols}{10}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+% ANU Exams Office mandated margins and footer style
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{16cm}
+\pagestyle{fancy}
+\lhead{} 
+\chead{} 
+\rhead{} 
+\pagenumbering{gobble}
+
+% DEPRECATED: ANU Exams Office mandated margins and footer style
+%\setlength{\topmargin}{0cm}
+%\setlength{\textheight}{9.25in}
+%\setlength{\oddsidemargin}{0.0in}
+%\setlength{\evensidemargin}{0.0in}
+%\setlength{\textwidth}{16cm}
+%\pagestyle{fancy}
+%\lhead{} %left of the header
+%\chead{} %center of the header
+%\rhead{} %right of the header
+%\lfoot{} %left of the footer
+%\cfoot{} %center of the footer
+%\rfoot{Page \ \thepage \ of \ \pageref{finalpage} \\
+%       \texttt{\examcode}} %Print the page number in the right footer
+
+\renewcommand{\headrulewidth}{0pt} %Do not print a rule below the header
+\renewcommand{\footrulewidth}{0pt}
+
+
+\begin{document}
+
+\paragraph{\textbf{Final Reminders:}\\}
+
+\begin{enumerate}
+\item Exam is slated for 3 hours, in class.
+\item You may use notes during the exam.
+\item You may NOT use electronic devices during the exam.
+\item Bring lots of paper. Better to have too much than too little.
+\item For the exam, you are allowed to use pencils. I recommend that you use a pencil, and also bring a good eraser. You are more likely to save time and less likely to make errors with a pencil/eraser than by scratching out mistakes with a pen.
+\end{enumerate}
+
+\paragraph{\textbf{Common Mistakes in RC Homework:}\\}
+
+\begin{enumerate}
+\item These are different:
+
+\begin{flalign}\tag{1A}
+\begin{split}
+&\{T|\forall P \in Parts(P.color = red \wedge P.pname = ``screw" \wedge \\
+&\hspace{1cm}\exists C \in Catalog(P.pid = C.pid \wedge C.sid = T.sid))\}
+\end{split}
+\end{flalign}
+This will only be true if ALL parts in the table are red AND are screws AND sold in Catalog by the same supplier. The result-set will be empty if any one part is blue, or any part is not a screw or if there is no supplier that sells every part. If the result-set is not empty, it will contain sellers that sell every single part, only when every part is a red screw.
+
+\begin{flalign}\tag{1B}
+\begin{split}
+&\{T|\forall P \in Parts(P.color = red \wedge P.pname = ``screw" \Rightarrow \\
+&\hspace{1cm}\exists C \in Catalog(P.pid = C.pid \wedge C.sid = T.sid))\}
+\end{split}
+\end{flalign}
+This will be true if for all parts P, IF P is red and P is a screw, THEN it is sold in the Catalog by the same supplier. The change from a $\wedge$ to a $\Rightarrow$ makes a big difference in the meaning of the query. The result-set will contain suppliers that sell every red screw.
+
+\begin{flalign}\tag{1C}
+\begin{split}
+&\{T|\forall P \in Parts(P \in Parts \Rightarrow \\
+&\hspace{1cm}P.color = red \wedge P.pname = ``screw" \wedge \\
+&\hspace{1cm}\exists C \in Catalog(P.pid = C.pid \wedge C.sid = T.sid))\}
+\end{split}
+\end{flalign}
+The condition is different in this case. In the previous case, red and screw are part of the conditions, so we only restrict our requirements to red screws. Here, we consider EVERY part, which is equivalent to example 1A. They must ALL be red, and screws, and sold by the same supplier.
+
+
+\newpage
+\item These are also different:
+
+\begin{flalign}\tag{2A}
+\begin{split}
+&\{<sid>|\forall <pid,pname,col> \in Parts \wedge \exists <pid,sid,cost> \in Catalog\}
+\end{split}
+\end{flalign}
+This is ALWAYS true. Even if Parts and Catalog contain nothing. It will return every supplier id in Catalog. The pid variable is REDEFINED in the second tuple. The sid variable can be used everywhere and represent the same thing because it is FREE, the pid variable cannot because it is BOUND.
+
+\begin{flalign}\tag{2B}
+\begin{split}
+&\{<sid>|\forall <pid,pname,col> \in Parts(\exists <pid,sid,cost> \in Catalog)\}
+\end{split}
+\end{flalign}
+This will return supplier ids that sell every part. The second pid is the SAME variable as the first pid, because it is used WITHIN the definition/scope of the first pid, between its parenthesis. $$\forall <pid,pname,col> \in Parts(def)$$
+This is why you still need to nest if you want to connect different tables together in DRC.
+
+\end{enumerate}
+
+\end{document}

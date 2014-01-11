@@ -1,0 +1,176 @@
+\documentclass[12pt]{article}
+\usepackage{longtable}
+\usepackage{hyperref}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset  -.85in
+
+\pagestyle{empty}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems  
+\\ Machine Project - Criminal Records Management
+}
+\end{center}
+
+\setlength{\unitlength}{1in}
+
+\begin{picture}(6,.1) 
+\put(0,0) {\line(1,0){6.25}}         
+\end{picture}
+
+\vskip.25in
+\noindent \textbf{Overview}: \\
+This project is intended as an avenue for students to apply both concepts learned in lectures and tools and technologies learned in lab. You will form groups of three, and write a \textbf{web application}. If any of you wish to work alone or in a pair instead, please contact us through the class e-mail at least three days before the deadline for submitting group names. 
+
+\vskip.25in
+\noindent \textbf{Technologies}: \\
+Since this is a machine project, you will have to implement and submit a working software prototype. To do this, you will need to use existing technology, some of which we have or will introduce in lab sessions. This is an opportunity for you to be exposed to many technologies essential in both an academic career conducting research, or a career writing or managing the production of software. 
+
+\begin{itemize}
+\item \textit{RDBMS}
+  
+You are required to use \textbf{Postgres} for this project. The minimum acceptable version is \textbf{Postgres 9.1}. We have already covered basic PostgreSQL in class. With what we have covered, you know enough to construct tables and write queries to achieve reasonably high marks for this project. However, doing more research on your own can make the work of building your application easier, or allow you to write optional or custom features for even higher marks. 
+
+\item \textit{Web Framework/CMS}
+
+The database will only be a component of your application, even though it may be the most important one. It is strongly recommended that you use a web framework instead of building your application from scratch. You may choose any web framework, in any language, with any plugins or third-party components. You may also use a content management system like Drupal. This will make it easier to write simple features, but you may have a harder time writing custom or specific features. The recommended frameworks are \href{https://www.djangoproject.com/}{\textbf{Django}} and \href{http://rubyonrails.org/}{\textbf{Ruby on Rails}}, because they are compatible with Postgres, well documented, have large communities and use languages that should not be too difficult or time-consuming to learn.
+
+\item \textit{Source Control Management}
+
+For submission, you will be required to use either the \href{http://git-scm.com/}{\textbf{git}} or \href{http://mercurial.selenic.com/}{\textbf{mercurial}} distributed code versioning systems, and you must host a remote repository at \href{https://github.com/}{\textbf{github}} or \href{https://bitbucket.org/}{\textbf{bitbucket}}. It is also strongly recommended that you use the repository for development, since this is a group project, and you will need to coordinate work done by multiple members. Learning the basics of using a DCVS is an investment that will pay off in your other classes and at work in the future. You are not required to master these tools, learning basic usage will be enough for a long time.
+
+\end{itemize}
+
+\newpage
+\noindent \textbf{Basic Requirements}: \\
+You will design and implement a records system for managing the following elements: 
+
+\begin{itemize}
+\item \textit{Reported Crimes}
+
+Crimes fall under a category. There should be at least five categories of crime. You may choose what those categories are. The time and date when a crime occurs should also be recorded. Assume this is always already known when the data for a specific crime is inputted. Crimes also happen in a particular location. When a crime is being investigated, it can be assigned an investigating officer. When a crime is solved, it is assigned a suspect as the perpetrator. Assume a crime is always committed by only one person, but can be investigated by many officers.
+
+\item \textit{Suspects}
+
+Suspects are individuals who may have committed one or more crimes. At the very least, their name and location should be recorded. For simplicity, assume that suspects are typically active in only one area. In the real world, names are not unique, so the system should be able to accommodate individuals with the same name. 
+
+\item \textit{Agents}
+
+Agents are officers who investigate crimes and patrol locations. At minimum, their name and current location should be recorded. While suspects do not change locations, agents should be able to. 
+
+\item \textit{Locations}
+
+Locations are places that suspects can be active in, agents can investigate, and crimes can happen. You may choose the level of granularity and organization for your locations. For example, you may want your locations to be planets and moons in a solar system, countries in the world map, different regions in the Philippines, or divide a fictional city like Gotham into a 2D grid of locations. Choose something that will be easy and consistent. Have human-readable names for each of the locations. Like human names, the names of places are not unique. For example, there are 50 places in the United States called ``Greenville". You should use a minimum of twenty different locations.
+
+\end{itemize}
+
+The above are the minimum required data that should be represented in your system. You may add or modify any attributes or tables if they will be useful for you in implementing certain features. For example, if having a Category table for crimes will help you assign a category to a crime, or help filter out a list of crimes by category, you may create one. You may also customize the data to fit a specific theme. A superhero-themed system may have a superpower attribute recorded for each criminal and each agent, for example. An alien or fantasy theme might merit recording the race of the suspects and criminals, and any special properties of locations.
+
+Evaluation will be based on what \textbf{features} have been completely and properly implemented. Specific features and their point allocation are given in the next section. 
+
+\newpage
+\noindent \textbf{Features}: \\
+The total number of points across all features is \textbf{200/100}. The maximum number of points you can acquire for your project is \textbf{150/100}. Since the weight of this component of your total grade 20\%, you can get a weighted maximum of \textbf{30\%}. 
+
+\vskip.25in
+\noindent \textbf{Basic CRUD}: \\
+The four fundamentals things that persistent-state applications are expected to do are \textbf{create}, \textbf{read}, \textbf{update}, and \textbf{delete} data. 
+
+\begin{itemize}
+\item \textit{Create - 20pts} \\
+Your application should provide a user interface for inputting new data. This includes crimes, suspects, agents, and any other custom data you have created. The only exception are locations, which may be pre-loaded and fixed in quantity. Software systems are typically created for the benefit of people who may not be able to write code. Your application should not require the user to directly write SQL or use an external tool like phpPgAdmin to add new data into the system.
+\begin{itemize}
+\item \textit{Create Crimes - 5pts}
+\item \textit{Create Suspects - 5pts}
+\item \textit{Create Agents - 5pts}
+\item \textit{Create Other - 5pts}
+\end{itemize}
+
+\item \textit{Update - 20pts} \\
+It should be possible to change or update entries for crimes, suspects, agents and locations without having to delete and recreate the entry. Most importantly, it should be possible to assign, remove and change the culprit and investigators for a crime. For other tables you may have created, this is optional.
+\begin{itemize}
+\item \textit{Update Crimes - 5pts}
+\item \textit{Update Suspects - 5pts}
+\item \textit{Update Agents - 5pts}
+\item \textit{Update Locations - 5pts}
+\end{itemize}
+
+\item \textit{Delete - 20pts} \\
+It should be possible to delete crimes, suspects, and agents. The application should ask the user for confirmation before doing so. If a suspect or agent is removed, crimes they have committed or are investigating should not be removed from the database. For other tables you may have created, this is optional.
+\begin{itemize}
+\item \textit{Delete Crimes - 5pts}
+\item \textit{Delete Suspects - 5pts}
+\item \textit{Delete Agents - 5pts}
+\item \textit{Confirmation \& No Cascade - 5pts}
+\end{itemize}
+
+\item \textit{Read - 40pts} \\
+Users should be able to retrieve paginated lists of crimes, suspects, and agents. You may choose how many items are shown in one page. Crimes should be ordered by date and time. It should be possible to filter crimes by category, location, and whether they have been solved or not. It should be possible to search for a specific crime. Suspects and agents should be ordered alphabetically. It should be possible to filter them by location, and search by name. For each suspect, there should be a way to view their criminal history. This is a list of one or more crimes that they have committed in the past. For each unsolved crime, there should be a way to view a list of investigating officers. Both should be paginated.
+
+\begin{itemize}
+\item \textit{Paginated List of Crimes - 5pts}
+\item \textit{Searching and Filtering the List of Crimes - 5pts}
+\item \textit{Paginated List of Suspects - 5pts}
+\item \textit{Searching and Filtering the List of Suspects - 5pts}
+\item \textit{Paginated List of Agents - 5pts}
+\item \textit{Searching and Filtering the List of Agents - 5pts}
+\item \textit{Paginated Criminal History - 5pts}
+\item \textit{Paginated List of Investigating Officers - 5pts}
+\end{itemize}
+\end{itemize}
+
+\vskip.25in
+\noindent \textbf{Intermediate Features}: \\
+For many applications, having CRUD features is sufficient. Very often, we want to know more interesting things that can be found out by running queries on the data. 
+
+\begin{itemize}
+\item \textit{Visualize - 45pts} \\
+People have an easier time processing and making conclusions from visual representations of data. This why charts are such a common way to present statistical data.
+\begin{itemize}
+\item \textit{Average Crime Per Hour Histogram - 20\%} \\
+Display a histogram that shows the average amount of crime across all locations that happens at each hour of the day, from 0:00-1:00, to 23:00-24:00.
+\item \textit{Histogram by Location - 10\%} \\
+Improve the above feature above by parameterizing by location. If a location is supplied, the histogram should only use data from the selected location.
+\item \textit{Pie Chart of Crimes Categories 10\%} \\
+Display a pie-chart that shows the breakdown of crimes by category.
+\item \textit{Pie Chart by Location 5\%} \\
+Improve the above feature by parameterizing by location. If a location is supplied, the chart should only use data from the selected location.
+\end{itemize}
+
+\item \textit{Something Else - 35pts} \\
+
+\end{itemize}
+
+
+\newpage
+\noindent \textbf{Miscellaneous}: \\
+There are a few other miscellaneous features that should be considered.
+
+\begin{itemize}
+\item \textit{Discretionary - 20pts} \\
+This is not a design class. Regardless, creative or attractive designs, interesting project themes, innovative features not listed above, or even humor are valuable and should be rewarded. Each instructor will be given free points to allocate to anything interesting for this purpose. 
+\begin{itemize}
+\item \textit{Mike - 10pts}
+\item \textit{Nestor - 10pts}
+\end{itemize}
+
+\item \textit{Prerequisites}
+
+There are also some features that are required but ungraded. You will need to prepare a README that will provide basic instructions on how to build, install and use your application. You will also need to prepare sufficient sample data to demonstrate your features, and a script that will populate your database with your sample data. Without these, we will not be able to check the functionality of your work. Both github and bitbucket have features that will allow you to create instructions, and the web framework you choose should give you a way to pre-load data into your application. 
+
+\end{itemize}
+
+\vskip.25in
+\noindent\textbf{Submission:} \\
+You must send a list of your group members and your group name to the class e-mail by \textbf{January 25, 2014}. By this time, you are also expected to have created a project page on your project hosting site, and to have provided read-privilege access to your repository for the [BLANK] account. 
+
+Development should cease on \textbf{March 30, 2014}. Each of your remote repositories should contain a branch named \textbf{submit}. Your instructors will pull from this remote branch. 
+
+\end{document}

@@ -157,10 +157,11 @@ Answers other than the ones provided below will be considered on a case-to-case 
 
 \begin{enumerate}
 \item 
-Yes, because a collection primary key only ensures that the combination of attributes is unique, and not each attribute in the collection.
+Yes, because a collection primary key only ensures that the ordered combination of attributes is unique, and not each attribute in the collection.
 
 \item
-Faculty(\underline{uid}, name, department, roomNum)
+Faculty(\underline{uid}:number, name:text, department:text, roomNum:number)\\
+In class hierarchies, sub-classes inherit from super-classes. Faculty will gain uid and name from User, and uid will be its primary key. The domains are not so important in this case, since they aren't specified in the ERD.
 
 \item
 The only one is Guest, because it's a weak entity. Weak entities have total participation in their identifying relationship. 

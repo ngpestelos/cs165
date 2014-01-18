@@ -4,3 +4,5 @@
 *.txt
 *.log
 *.odt
+*.fdb_latexmk
+*.out

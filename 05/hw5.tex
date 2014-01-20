@@ -34,7 +34,9 @@
 \[R(A, B, C, D)\]
 
 \vskip.15in
-\noindent with FDs $AB \rightarrow C$, $C \rightarrow D$, and $D \rightarrow A$
+\noindent with FDs
+
+\[AB \rightarrow C, C \rightarrow D, D \rightarrow A\]
 
 \vskip.15in
 \noindent What are all the nontrivial FDs that follow from the given FDs? Limit your answers to one attribute on the right-hand side.
@@ -45,9 +47,8 @@
 \vskip.45in
 \noindent [6 points] 3. Consider a movie rental relation
 
-\[Rentals(customerID, customerName, street, city, zipcode, telephone, email, title, year, actor, genre, rentalID, rentalPrice, rentalDate, rentalLimit)\]
+\small{\[R(custID, custName, street, city, email, title, year, actor, genre, rentID, rentPrice, rentDate, rentLimit)\]}
 
-\vskip.15in
-\noindent Decompose this relation into smaller relations, such that no data is lost when these small relations are recombined. The goal of this exercise is to keep redundancies and inconsistencies to a minimum.
+\noindent Decompose this relation into smaller relations such that no data is lost when the decomposed relations are joined. The goal of this exercise is to keep redundancies and inconsistencies to a minimum.
 
 \end{document}

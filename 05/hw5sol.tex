@@ -1,0 +1,70 @@
+\documentclass[12pt]{article}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset=-.85in
+\pagestyle{empty}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{center}
+{\bf CS 165 Database Systems
+\\ Solutions to Homework 5 - Database Normalization}
+\end{center}
+
+\setlength{\unitlength}{1in}
+
+\noindent 1. Consider the relation
+
+\[Properties(name, year, sqm, city, radius, zipcode)\]
+
+\vskip.15in
+\noindent A property, acquired at some year, of a certain size (in square meters) is located within some radius from a city having a unique zipcode. Also, a property can only belong to one city.
+
+\vskip.15in
+\noindent What functional dependencies (FDs) do you expect to hold?
+
+\vskip.15in
+\noindent\textbf{Solution:}
+
+\vskip.15in
+\noindent A functional dependency means that tuples $t,u \hspace{.05in} \epsilon \hspace{0.05in} R$
+
+\[ t_{a_1,a_2,..,a_n} = u_{a_1,a_2,..,a_n} \Rightarrow t_{b_1,b_2,..,b_n} = u_{b_1,b_2,..,b_n}\]
+
+\begin{equation} {name, year, city} \rightarrow {sqm, radius} \end{equation}
+\vskip.15in
+\begin{equation} {city} \rightarrow {zipcode} \end{equation}
+
+\vskip.45in
+\noindent 2. Consider the relation
+
+\[R(A, B, C, D)\]
+
+\vskip.15in
+\noindent with FDs
+
+\[AB \rightarrow C, C \rightarrow D, D \rightarrow A\]
+
+\vskip.15in
+\noindent What are all the nontrivial FDs that follow from the given FDs?
+\vskip.15in
+\noindent\textbf{Solution:}
+
+\vskip.15in
+\noindent A functional dependency ($X \rightarrow Y$) is nontrivial if $Y \not\subset X$. Using the transitive rule, we find the following nontrivial FDs:
+
+\[AB \rightarrow D, C \rightarrow A \]
+
+\vskip.15in
+\noindent What are all the keys of $R$?
+
+\vskip.15in
+\noindent A key is defined as the set of attributes that functionally determines all of the attributes in a  relation. For this question, we can use the closure of one of the FDs to help us find a key:
+
+\[\{A,B\}^+ = \{A,B,C,D\} \]
+
+\end{document}

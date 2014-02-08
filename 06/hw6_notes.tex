@@ -1,0 +1,150 @@
+\documentclass[10pt]{article}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset=-.85in
+\pagestyle{empty}
+\usepackage{amsmath}
+
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems \\
+Concurrency Control (Summary) }
+\end{center}
+
+\vskip.35in
+\noindent {\bf A Notation for Transactions and Schedules}
+
+\vskip.10in
+\noindent We will concern ourselves with operations performed on the database objects, and not its values.
+
+\vskip.10in
+\noindent So this table:
+
+\begin{quote}
+\begin{tabular}{l|l}
+{\bf $T_1$}&{\bf $T_2$}\\
+\hline
+READ(A,t)&READ(A,s) \\
+t := t+100&s := s*2 \\
+WRITE(A,t)&WRITE(A,s) \\
+READ(B,t)&READ(B,s) \\
+t := t+100&s := s*2 \\
+WRITE(B,t)&WRITE(B,s)
+\end{tabular}
+\end{quote}
+
+\vskip.10in
+\noindent can be represented as
+
+\begin{quote}
+$T_1: r_1(A); w_1(A); r_1(B); w_1(B);$
+\vskip.10in
+$T_2: r_2(A); w_2(A); r_2(B); w_2(B);$
+\end{quote}
+
+\vskip.10in
+\noindent An {\it action} is an expression of the form $r_i(X)$ or $w_i(X)$.
+\vskip.10in
+\noindent A {\it transaction} is a sequence of actions $T_i$.
+\vskip.10in
+\noindent A {\it schedule} $S$ of a set of transactions $T$ is a sequence of actions, in which for each transaction in $T$, the actions of $T_i$ appear in $S$ in the same order that they appear in the definition of $T_i$ itself. We say that $S$ is {\it interleaving} of the actions of the transactions of which it is composed.
+
+\begin{quote}
+$S: r_1(A); w_1(A); r_1(B); w_1(B);r_2(A); w_2(A); r_2(B); w_2(B);$
+\end{quote}
+
+\vskip.15in
+\noindent {\bf Serial and Serializable Schedules}
+
+\vskip.10in
+\noindent A {\it serial} schedule is when transactions execute one at a time.
+
+\vskip.10in
+\noindent A schedule is {\it serializable} if it is equivalent to some serial schedule. Multiple transactions can interleave a schedule, but must not leave the database in an inconsistent state.
+
+\vskip.15in
+\noindent {\bf Conflict-Serializability}
+
+\vskip.10in
+\noindent Test a schedule's serializability by swapping some of its adjacent actions. \\
+
+\noindent A {\it conflict} can occur if (1) we swap two actions of the same transaction, or (2) swap two actions that access the same object (with at least one write action).
+
+\vskip.15in
+\noindent {\bf Precedence Graphs}
+
+\vskip.10in
+\noindent When conflicting pairs of actions appear in a schedule, its sequence of transactions must appear in the same order. $T_1$ {\it takes precedence over} $T_2$ if there are actions $A_1$ of $T_1$ and $A_2$ of $T_2$, such that:
+
+\vskip.10in
+\begin{quote}
+1. $A_1$ is ahead of $A_2$ in $S_1$. \\
+2. Both $A_1$ and $A_2$ involve the same object. \\
+3. At least one of $A_1$ and $A_2$ is a write action.
+\end{quote}
+
+\vskip.10in
+\noindent Construct a graph where each node is a transaction. An edge exists from $T_1$ to $T_2$ if some action in $T_1$ conflicts with a later action in $T_2$. A schedule is conflict-serializable if and only if the precedence graph is acyclic.
+
+\vskip.15in
+\noindent {\bf Locking}
+
+\vskip.10in
+\noindent A step towards ensuring serializability is to add a lock to an object. While locked, other transactions do not have access to the object. Once the transaction is finished with the object, it unlocks it.
+
+\vskip.15in
+\noindent {\bf Two-Phase Locking}
+
+\vskip.10in
+\noindent All transactions in a schedule first request locks (acquire phase), and then release these locks (release phase).
+
+\vskip.15in
+\noindent {\bf Deadlock}
+
+\vskip.10in
+\noindent While two-phase locking prevents transactions for requesting locks after a specific time, it still does not solve the problem when transactions are made to wait for others to release their locks.
+
+\vskip.15in
+\noindent {\bf Shared and Exclusive Locks}
+
+\vskip.10in
+\noindent One problem with locks is that a transaction is forced to acquire a lock on an object even if it only needs to read the object. This increases the changes of deadlock. One trade-off is to have two different locks with different strengths.
+
+\vskip.10in
+\noindent Shared ($sl_i(X)$) and Exclusive ($xl_i(X)$) locks have three requirements:
+
+\vskip.10in
+\noindent 1. {\it Consistency of transactions}. A transaction may not write without holding an exclusive lock, and you may not read without holding some lock. More precisely, in any transaction $T_i$,
+
+\begin{quote}
+(a) A read action $r_i(X)$ must be preceded by $sl_i(X)$ or $xl_i(X)$, with no intervening $u_i(X)$. \\
+(b) A write action $w_i(X)$ must be preceded by $xl_i(X)$, with no intervening $u_i(X)$.
+\end{quote}
+
+\vskip.10in
+\noindent All locks must be followed by an unlock of the same object.
+
+\vskip.10in
+\noindent 2. {\it Two-phase locking of transactions}. Locking must precede unlocking. To be more precise, in any two-phased locked transaction $T_i$, no action $sl_i(X)$ or $xl_i(X)$ can be preceded by an action $u_i(Y)$, for any $Y$.
+
+\vskip.10in
+\noindent 3. {\it Legality of schedules}. An object may either be locked exclusively by one transaction or by several in shared mode, but not both. More precisely:
+
+\begin{quote}
+(a) If $xl_i(X)$ appears in a schedule, then there cannot be a following $xl_j(X)$ or $sl_j(X)$, for some $j$ other than $i$, without an intervening $ul_i(X)$. \\
+(b) If $sl_i(X)$ appears in a schedule, then there cannot be a following $xl_j(X)$, for some $j$ other than $i$, without an intervening $ul_i(X)$.
+\end{quote}
+
+\vskip.10in
+\noindent It is possible for a transaction to have both shared and exclusive locks on the same object, provided it does not conflict with the lock(s) of other transactions.
+
+\vskip.35in
+\noindent {\bf Reference}
+\vskip.10in
+Database Systems - The Complete Book (Garcia-Molina, Ullman, Widom)
+
+\end{document}

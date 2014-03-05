@@ -1,0 +1,113 @@
+\documentclass[10pt]{article}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset=-.85in
+\pagestyle{empty}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true}
+
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems \\
+Indexing (Summary) }
+\end{center}
+
+\vskip.35in
+\noindent For this lesson, we seek to answer these questions:
+
+\begin{itemize}
+\item What is an index?
+\item Why is an index important?
+\item What are the types of indexes?
+\item What is a B-tree index?
+\item Why use a B-tree index?
+\item What rules does a B-tree index follow?
+\item How does a B-tree index work?
+\end{itemize}
+
+\vskip.15in
+\noindent {\bf What is an index?}
+
+\vskip.15in
+\noindent An index is a data structure to quickly fetch records. Indexes take up space in the disk, in exchange for faster search times. This is similar to an index in a book or a card catalog in a library. A typical index sorts records according to a key. \\
+
+\noindent Index structures also play a significant role in web information retrieval (i.e., search engines).
+
+\vskip.35in
+\noindent {\bf Why is an index important?}
+
+\vskip.15in
+\noindent Suppose you are a librarian for a small library and you've been given an author of a book. If the library does not have a card catalog, you'd end up searching the entire collection. This could take you several minutes, but then you realize that next time, you wouldn't want to spend the same amount to search. So you need a faster way to search and to do this, you'd organize shelves by last name.
+
+\vskip.35in
+\noindent {\bf What are types of indexes?}
+
+\vskip.15in
+\noindent An index can be {\it dense} or {\it sparse}. A dense index holds keys and pointers to records. One advantage of a dense index is that it could fit in memory. \\
+
+\noindent Furthermore, an index can serve as the {\it primary index} or a {\it secondary index}. A primary index has only one level (i.e., given a key, it points directly to the record). Meanwhile, a secondary index adds additional layers. Think of a secondary index as an index to the index. \\
+
+\noindent We could use disk I/O to distinguish between primary and secondary indexes. How many trips to the disk would it cost to find the location of some record? \\
+
+\noindent Search engines use {\it inverted indexes} to map words to web pages.
+
+\vskip2.0in
+\noindent {\bf What is a B-tree index?}
+
+\vskip.15in
+\noindent A B-tree index is a commonly used index structure that resembles a binary search tree. Each node in a B-tree index contains {\it keys} and {\it pointers}. Also, each node has a maximum number of keys ({\it n}) and pointers ({\it n + 1}). There are three types of nodes: the {\it root node}, {\it intermediate nodes}, and {\it leaf nodes}.
+
+\vskip.35in
+\noindent {\bf Why use a B-tree index?}
+
+\vskip.15in
+\noindent A B-tree index tends to be a shallow data structure (i.e., its height is kept small even with large number of records). Traversing the index from root to leaf takes logarithmic time, hence fewer trips to the disk. \\
+
+\noindent Also, each leaf node contains a pointer to the next leaf node, thus making range searches easy. \\
+
+\noindent {\bf What rules does a B-tree index follow?}
+
+\begin{itemize}
+\item The root node has at least two pointers.
+\item An intermediate node must have at least $\lfloor n + 1 \rfloor / 2$ keys.
+\item A leaf node must have at least $\lceil n + 1 \rceil / 2$ keys.
+\item In a leaf node, keys node are arranged sequentially and it points to the next leaf node to the right.
+\end{itemize}
+
+\noindent In order to be consistent with the rules, a B-tree may fix itself by splitting or merging nodes.
+
+\vskip.35in
+\noindent {\bf How does a B-tree index work?}
+
+\vskip.15in
+\noindent (Search) Let's assume that all keys are unique. To search for some record with key ({\it K}), we can search recursively, starting from the root until we reach the leaf node. If we are already at the leaf node, {\it K} should point to the record. If we are at an intermediate node, pick the child node that corresponds to {\it K}, and so on.
+
+\vskip.15in
+\noindent (Range queries) To find all keys within a range {\it[a,b]}, we first search for {\it a}. This takes us to the leaf node containing {\it a}. Inside the leaf node, We search for keys $\ge a$ and traverse the next leaf node until we reach the key equal to {\it b}.
+
+\vskip.15in
+\noindent (Insert) To insert a new key into the index, we follow these steps:
+
+\begin{itemize}
+\item If there is space in the corresponding leaf node, we insert the key.
+\item If there is no room for the key, we split the leaf into two nodes. Move the upper half to a new node and update the parent pointers. This could also involve splitting the intermediate nodes and adding a new key-pointer pair at the next higher level.
+\item A special case is when we try to insert at the root node. If there is no room, we split the root node and create a new root that would serve as the parent to the split nodes.
+\end{itemize}
+
+\noindent (Delete) To delete a key, we have to consider the following possibilities:
+
+\begin{itemize}
+\item The leaf node still has the minimum number of keys after deletion.
+\item The leaf node has less than the minimum number of keys after deletion. The tree could redistribute keys from the node's sibling or, if the sibling only has a minimum number of keys, merge them.
+\end{itemize}
+
+\vskip.35in
+\noindent {\bf See also}
+
+
+\end{document}

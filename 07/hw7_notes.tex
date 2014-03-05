@@ -1,0 +1,131 @@
+\documentclass[10pt]{article}
+\textwidth=7in
+\textheight=9.5in
+\topmargin=-1in
+\headheight=0in
+\headsep=.5in
+\hoffset=-.85in
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true}
+
+\begin{document}
+
+\begin{center}
+{\bf CS165 Database Systems \\
+Secondary Storage Management (Summary)}
+\end{center}
+
+\vskip.35in
+\noindent Databases almost always involve working with disks (secondary storage). For this lesson, we seek answers to these questions: \\
+
+\begin{itemize}
+\item What are the types of storage (and how fast are each one)?
+\item How do disks work?
+\item What factors affect the speed of accessing data?
+\item What are the types of disk failure (and what can be done about them)?
+\item How is data stored in disk (and how are they accessed)?
+\end{itemize}
+
+\vskip.15in
+\noindent {\bf What are the types of storage?}
+
+\vskip.15in
+\noindent Think of this as a hierarchy, where the fastest {\it CPU cache} is at the top, followed by {\it main memory}, then {\it secondary storage}. Each type of storage is an order of magnitude faster (or slower). \\
+
+\noindent Memory can be {\it volatile} or {\it non-volatile}. Storage that is non-volatile (e.g. hard drives) can keep data even after the power supplied to a machine is turned off. Cache memory and main memory are volatile.
+
+\vskip.15in
+\noindent {\bf How do disks work?}
+
+\vskip.15in
+\noindent Data are stored in {\it blocks}, which are stored in a {\it sector} of a {\it track}. For simplicity, we limit our discussion to conventional hard drives (rotating platters) and not SSDs.\\
+
+\noindent A disk consists of {\it platters}, {\it heads}, and a {\it controller}. A {\it cylinder} is the set of tracks that are currently under the disk head. This configuration will play a role in computing the blocks' physical addresses.\\
+
+\noindent The disk controller is a dedicated circuit responsible for (1) moving the disk heads, (2) selecting the appropriate sector to transfer data, (3) perform the actual data transfer, (4) buffer tracks to main memory. \\
+
+\noindent Suppose we have a disk with the following specifications (assuming no gaps between sectors):
+
+\begin{itemize}
+\item 8 platters (16 surfaces)
+\item 65,536 tracks per surface
+\item 256 sectors per track
+\item 4,096 bytes per sector
+\end{itemize}
+
+\noindent To compute the disk's capacity (1 TB), we multiply the number of surfaces with the number of tracks ({\it 1,048,576} tracks), then times the number of sectors per track ({\it 268,435,546} sectors), and finally, multiplied with the number of bytes per sector ({\it 1,099,511,627,776} bytes).
+
+\vskip.15in
+\noindent {\bf What factors affect the speed of accessing data?}
+
+\vskip.15in
+\noindent Compared to main memory, disks are slow. Accessing data involves three steps: (1) position the head at the right track ({\it seek time}), (2) wait until the desired sector falls under the head ({\it rotational delay}), and (3) read/write data in the sector ({\it block access time}). \\
+
+\noindent Using the disk used in the previous example (re: computing capacity) and suppose we now have the following information and we are tasked to compute the minimum, maximum, and average times for a 16,384-byte block:
+
+\begin{itemize}
+\item rotates at 7,200 rpm (0.0083 ms per rotation)
+\item heads move at 1.00025 milliseconds per track
+\item gaps occupy 10 percent of the space around the track
+\end{itemize}
+
+\noindent The minimum time is simply the block transfer time (head is already at the desired track, with the block's first sector already below the head).
+
+\noindent The average time is the ratio of how long it takes for the head to span the block versus the time it takes to span the whole track.
+
+\noindent ({\it Scheduling latency}) It is not always the case that if a disk is rated at 10 milliseconds that it is able to perform at that speed. {\it Throughput} is the number of requests processed per second. Increasing throughput could involve one or more of these steps:
+
+\begin{itemize}
+\item Place related blocks together in the same cylinder.
+\item Distribute data across multiple disks. This increases the block access per unit time.
+\item Mirror a disk to access more blocks at the same time.
+\item Use a disk-scheduling algorithm to efficiently order how blocks are accessed.
+\item Buffer frequently used blocks in main memory.
+\end{itemize}
+
+\vskip.15in
+\noindent {\bf What are the types of disk failure (and what can be done about them)?} \\
+
+\noindent Part of the database's job is to ensure data is not lost. Failure could happen when:
+
+\begin{itemize}
+\item An attempt to read or write a sector is unsuccessful ({\it intermittent failure}).
+\item Bits are permanently corrupted ({\it media failure}).
+\item An error occured while writing a block to disk and the previous data no longer can be retrieved ({\it write failure}).
+\item The entire disk becomes unreadable, possibly permanently {\it disk crash}.
+\end{itemize}
+
+\noindent The disk controller can use checksums to check if the sector has been correctly read. In case it needs to write a sector, but the sector's integrity is unknown, it needs to read the data again. A checksum is a set of bits that tells if the sector has been properly written to disk. \\
+
+\noindent But how can we correct the error? One approach is to store another copy of the sector to be written ({\it stable-storage policy}). \\
+
+\noindent As mentioned previously when speeding up data access, we can also consider using more than one disk. \\
+
+\noindent {\bf How is data stored in disk (and how are they accessed)?} \\
+
+\noindent A {\it record} contains a set of {\it fields}. Think of records as similar to {\it structs} in C. A record can be of fixed length or have a variable length. Each record has a {\it header} containing {\it metadata} such as length and pointers to its fields. \\
+
+\noindent Blocks store a collection of records and similar to a record, it has its own header. It also has a pointer to the next block (note: this will be discussed further in the Indexing lesson). \\
+
+\noindent Databases refer to blocks using addresses. There are two types of addresses: physical and database addresses. When moving blocks to and from disk, an address translation is performed ({\it pointer swizzling}). \\
+
+\noindent Inserting a record to a block, for the simplest case, involves adding a new record to the block. However, if the block must only contain a fixed number of records, then an {\it overflow block} is created. \\
+
+\noindent Deleting a record provides an opportunity to reclaim space. However, we would want to avoid {\it dangling pointers} (i.e., pointers to deleted records). A special record called a {\it tombstone}, indicates that the record has been deleted. \\
+
+\noindent Updating a fixed-length record is straightforward, as it occupies the same location in the block. However, when working with a variable-length record, the block may need to be resized (shrunk or grown) to fit the updated record, or an overflow block could be created.
+
+\vskip.15in
+\noindent {\bf See Also}
+
+\begin{itemize}
+\item \href{http://goo.gl/4FccW}{What are numbers every computer engineer should know?}
+\item \href{http://goo.gl/3tn5xv}{The elevator algorithm}
+\item \href{http://en.wikipedia.org/wiki/RAID}{Redundant Array of Inexpensive Disks}
+\item \href{http://en.wikipedia.org/wiki/Ssd}{Solid-State Drive}
+\end{itemize}
+
+\end{document}

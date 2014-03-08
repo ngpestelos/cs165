@@ -16,29 +16,91 @@ Concurrency Control (Summary) }
 \end{center}
 
 \vskip.35in
+\noindent {\bf Why?}
+
+\vskip.10in
+\noindent Multiple transactions running at the same time can cause records in the database to become inconsistent. The {\it scheduler} is responsible for arranging read and write actions to preserve consistency. It generates a {\it schedule}, which is an ordered list of actions for each transaction.
+
+\vskip.35in
+\noindent {\bf Serial and Serializable Schedules}
+
+\vskip.10in
+\noindent A schedule is {\it serial} if one transaction finishes completely before running the next transaction ($T_1$ first before $T_2$ or vice versa):
+
+\begin{quote}
+\begin{tabular}{l|l|l|l}
+$T_1$			&$T_2$			&$A$	  &$B$	\\
+\hline
+ 		    	&				& 25 	  & 25 	\\
+$READ(A,t)$ 	& 				& 	 	  &    	\\
+$t:=t+100$		&				&		  &	   	\\
+$WRITE(A,t)$	&				& 125	  &	   	\\
+$READ(B,t)$ 	& 				& 	 	  &    	\\
+$t:=t+100$		&				&		  &	   	\\
+$WRITE(B,t)$	&				& 		  & 125 \\
+			 	&$READ(A,s)$ 	& 	 	  &    	\\
+				&$s:=s*2$		&		  &	   	\\
+				&$WRITE(A,s)$	& 250	  &		\\
+				&$READ(B,s)$	&		  &		\\
+				&$s:=s*2$		&		  &		\\
+				&$WRITE(B,s)$	&		  & 250 \\
+\end{tabular}
+\end{quote}
+
+\vskip.10in
+\noindent Actions for multiple transactions can be {\it interleaved} (i.e., interrupt $T_1$ to let some actions of $T_2$ run). A schedule is {\it serializable} if the interleaved actions preserve consistency:
+
+\begin{quote}
+\begin{tabular}{l|l|l|l}
+$T_1$			&$T_2$			&$A$	  &$B$	\\
+\hline
+ 		    	&				& 25 	  & 25 	\\
+$READ(A,t)$ 	& 				& 	 	  &    	\\
+$t:=t+100$		&				&		  &	   	\\
+$WRITE(A,t)$	&				& 125	  &	   	\\
+				& $READ(A,s)$	&		  &		\\
+				& $s:=s*2$		&		  &		\\
+				& $WRITE(A,s)$  & 250	  &		\\
+$READ(B,t)$		&				&		  &		\\
+$t:=t+100$		&				&		  &		\\
+$WRITE(B,t)$	&				&		  & 125 \\
+				 $READ(B,s)$	&		  & 	\\
+				& $s:=s*2$		&		  &		\\
+				& $WRITE(B,s)$	&		  & 250 \\
+\end{tabular}
+\end{quote}
+
+\vskip.10in
+\noindent Not all schedules lend themselves to serializability. A schedule is {\it non-serializable} if the interleaved actions would break consistency:
+
+\begin{quote}
+\begin{tabular}{l|l|l|l}
+$T_1$			&$T_2$			&$A$	  &$B$	\\
+\hline
+ 		    	&				& 25 	  & 25 	\\
+$READ(A,t)$ 	& 				& 	 	  &    	\\
+$t:=t+100$		&				&		  &	   	\\
+$WRITE(A,t)$	&				& 125	  &	   	\\
+				& $READ(A,s)$	&		  &		\\
+				& $s:=s*2$		&		  &		\\
+				& $WRITE(A,s)$  & 250	  &		\\
+				& $READ(B,s)$	&		  & 	\\
+				& $s:=s*2$		&		  &		\\
+				& $WRITE(B,s)$	&		  & 50  \\
+$READ(B,t)$		&				&		  &		\\
+$t:=t+100$		&				&		  &		\\
+$WRITE(B,t)$	&				&		  & 150 \\
+\end{tabular}
+\end{quote}
+
+\vskip.35in
 \noindent {\bf A Notation for Transactions and Schedules}
 
 \vskip.10in
 \noindent We will concern ourselves with operations performed on the database objects, and not its values.
 
 \vskip.10in
-\noindent So this table:
-
-\begin{quote}
-\begin{tabular}{l|l}
-{\bf $T_1$}&{\bf $T_2$}\\
-\hline
-READ(A,t)&READ(A,s) \\
-t := t+100&s := s*2 \\
-WRITE(A,t)&WRITE(A,s) \\
-READ(B,t)&READ(B,s) \\
-t := t+100&s := s*2 \\
-WRITE(B,t)&WRITE(B,s)
-\end{tabular}
-\end{quote}
-
-\vskip.10in
-\noindent can be represented as
+\noindent A transaction can be represented as sequence of read and write actions:
 
 \begin{quote}
 $T_1: r_1(A); w_1(A); r_1(B); w_1(B);$
@@ -47,32 +109,28 @@ $T_2: r_2(A); w_2(A); r_2(B); w_2(B);$
 \end{quote}
 
 \vskip.10in
-\noindent An {\it action} is an expression of the form $r_i(X)$ or $w_i(X)$.
-\vskip.10in
-\noindent A {\it transaction} is a sequence of actions $T_i$.
-\vskip.10in
-\noindent A {\it schedule} $S$ of a set of transactions $T$ is a sequence of actions, in which for each transaction in $T$, the actions of $T_i$ appear in $S$ in the same order that they appear in the definition of $T_i$ itself. We say that $S$ is {\it interleaving} of the actions of the transactions of which it is composed.
+\noindent An {\it action} is an expression of the form $r_i(X)$ or $w_i(X)$. \\
+
+\noindent A {\it schedule} $S$ is a long chain of actions, which may have interleaving transactions:
 
 \begin{quote}
 $S: r_1(A); w_1(A); r_1(B); w_1(B);r_2(A); w_2(A); r_2(B); w_2(B);$
 \end{quote}
 
 \vskip.15in
-\noindent {\bf Serial and Serializable Schedules}
-
-\vskip.10in
-\noindent A {\it serial} schedule is when transactions execute one at a time.
-
-\vskip.10in
-\noindent A schedule is {\it serializable} if it is equivalent to some serial schedule. Multiple transactions can interleave a schedule, but must not leave the database in an inconsistent state.
-
-\vskip.15in
 \noindent {\bf Conflict-Serializability}
 
 \vskip.10in
-\noindent Test a schedule's serializability by swapping some of its adjacent actions. \\
+\noindent Our goal is to test a schedule's serializability by swapping some of its adjacent actions. 
 
-\noindent A {\it conflict} can occur if (1) we swap two actions of the same transaction, or (2) swap two actions that access the same object (with at least one write action).
+\vskip.10in
+\noindent A {\it conflict} is when two pairs of actions, when swapped, led to a change in a transaction's result.
+
+\vskip.10in
+\noindent Our goal would be to test a schedule's serializability by swapping some of its adjacent actions belonging to different transactions. If a schedule claims to be conflict-serializable, then it can be transformed into a serial schedule.
+
+\vskip.10in
+\noindent A conflict occurs if (1) we swap two actions of the same transaction, or (2) swap two actions that access the same object (with at least one write action).
 
 \vskip.15in
 \noindent {\bf Precedence Graphs}
@@ -112,7 +170,7 @@ $S: r_1(A); w_1(A); r_1(B); w_1(B);r_2(A); w_2(A); r_2(B); w_2(B);$
 \noindent {\bf Shared and Exclusive Locks}
 
 \vskip.10in
-\noindent One problem with locks is that a transaction is forced to acquire a lock on an object even if it only needs to read the object. This increases the changes of deadlock. One trade-off is to have two different locks with different strengths.
+\noindent One problem with locks is that a transaction is forced to acquire a lock on an object even if it only needs to read the object. This increases the chances of deadlock. One trade-off is to have two locks with different strengths (write lock stronger than read lock).
 
 \vskip.10in
 \noindent Shared ($sl_i(X)$) and Exclusive ($xl_i(X)$) locks have three requirements:

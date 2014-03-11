@@ -58,7 +58,8 @@ Secondary Storage Management (Summary)}
 
 \noindent To compute the disk's capacity (1 TB), we multiply the number of surfaces with the number of tracks ({\it 1,048,576} tracks), then times the number of sectors per track ({\it 268,435,546} sectors), and finally, multiplied with the number of bytes per sector ({\it 1,099,511,627,776} bytes).
 
-\vskip.15in
+\newpage
+
 \noindent {\bf What factors affect the speed of accessing data?}
 
 \vskip.15in
@@ -72,9 +73,9 @@ Secondary Storage Management (Summary)}
 \item gaps occupy 10 percent of the space around the track
 \end{itemize}
 
-\noindent The minimum time is simply the block transfer time (head is already at the desired track, with the block's first sector already below the head).
+\noindent The minimum time is simply the block transfer time (head is already at the desired track, with the block's first sector already below the head). \\
 
-\noindent The average time is the ratio of how long it takes for the head to span the block versus the time it takes to span the whole track.
+\noindent The average time is the ratio of how long it takes for the head to span the block versus the time it takes to span the whole track. \\
 
 \noindent ({\it Scheduling latency}) It is not always the case that if a disk is rated at 10 milliseconds that it is able to perform at that speed. {\it Throughput} is the number of requests processed per second. Increasing throughput could involve one or more of these steps:
 
@@ -103,6 +104,8 @@ Secondary Storage Management (Summary)}
 \noindent But how can we correct the error? One approach is to store another copy of the sector to be written ({\it stable-storage policy}). \\
 
 \noindent As mentioned previously when speeding up data access, we can also consider using more than one disk. \\
+
+\newpage
 
 \noindent {\bf How is data stored in disk (and how are they accessed)?} \\
 

@@ -4,7 +4,7 @@
 % 2004; 2009, Timothy Kam, ANU School of Economics
 % Licence type: Free as defined in the GNU General Public Licence: http://www.gnu.org/licenses/gpl.html
 
-\documentclass[a4paper,12pt,leqno]{article}
+\documentclass[a4paper,10pt,leqno]{article}
 \usepackage[fleqn]{mathtools}
 \usepackage[labelformat=empty]{caption}
 \usepackage{fancyhdr}
@@ -87,7 +87,7 @@
 % End title page
 
 \newpage
-\noindent{\textbf{Section 1: True or False [10 points]}\\}
+\noindent{\textbf{Section 1: True or False [10 points]}\\\\}
 \noindent Write {\textbf T} if the statement is true. If the statement is false, write {\textbf F}.
 
 \noindent 1. Higher normal forms have more redundancy. \\
@@ -101,24 +101,22 @@
 \noindent 9. There can be attributes that are not functionally dependent on other attributes. \\
 \noindent 10. Computing the minimum access time for a rotating disk requires only the block transfer time. 
 
-\vskip.10in
+\vskip.35in
 \noindent{\textbf{Section 2: Functional Dependencies [10 points]}}
 
 \vskip.10in
-\noindent Given this relation:
+\noindent Given this relation for keeping a history of orders made by customers:
 
 \begin{quote}
-$Orders(cust_id, cust_name, address, telephone, email, order_number, order_date, item_number, item_name, selling_price, quantity)$
+$Orders(custid, custname, address, telephone, email, ordernum, orderdate, itemnum, itemname, \\sellingprice, quantity)$
 \end{quote}
-
-This relation stores a history of orders made by a customer. An order could possibly contain more than one item.
 
 \begin{quote}
 \item $i.$ What are the functional dependencies for this relation?
 \item $ii.$ Decompose this relation into smaller relations with minimal redundancy and show that the resulting decomposition the original relation's functional dependencies.
 \end{quote}
 
-\vskip.2in
+\vskip.35in
 \noindent{\textbf{Section 3: Concurrency [10 points]}}
 
 \vskip.10in
@@ -133,7 +131,8 @@ $i.$ What is the precedence graph of the schedule? \\
 $ii.$ Is the schedule conflict-serializable? If so, give one equivalent serial schedule.
 \end{quote}
 
-\vskip.2in
+\newpage
+
 \noindent{\textbf{Section 4: Index Structures [10 points]}}
 
 \vskip.10in
@@ -172,16 +171,16 @@ $iv.$ After $iii$, draw the B-tree after inserting 51. \\
 $v.$ After $iv$, draw the B-tree after inserting 32.
 \end{quote}
 
-\vskip.10in
+\vskip.35in
 \noindent{\textbf{Section 5: Essay [10 points]}}
 
 \vskip.10in
-\noindent Use your own words to describe/explain the following:
+\noindent Use your own words to explain the following:
 
 \begin{quote}
 $i.$ What are benefits to having shared locks? \\
 $ii.$ What does a scheduler do and what is scheduling latency? \\
-$iii.$ What is throughput? What are ways to increase it? \\
+$iii.$ What is throughput and what are ways to increase it? \
 $iv.$ What are different ways for a disk to fail? \\
 $v.$ What are the usual tradeoffs to consider when normalizing relations?
 \end{quote}

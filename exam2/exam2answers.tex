@@ -1,0 +1,106 @@
+% ANUfinalexam.tex (Version 2.0)
+% ===============================================================================
+% Australian National University Final Exam LaTeX template.
+% 2004; 2009, Timothy Kam, ANU School of Economics
+% Licence type: Free as defined in the GNU General Public Licence: http://www.gnu.org/licenses/gpl.html
+
+\documentclass[a4paper,10pt,leqno]{article}
+\usepackage[fleqn]{mathtools}
+\usepackage[labelformat=empty]{caption}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+% Insert your course information here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\institution}{UNIVERSITY OF THE PHILIPPINES DILIMAN}
+\newcommand{\titlehd}{Database Systems}
+\newcommand{\examtype}{Second Exam (Answer Key)}
+\newcommand{\examdate}{March 15, 2014}
+\newcommand{\examcode}{CS165}
+\newcommand{\writetime}{THREE Hours}
+\newcommand{\lastwords}{End of Exam}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ANU Exams Office mandated margins and footer style
+\setlength{\topmargin}{0cm}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{0.0in}
+\setlength{\evensidemargin}{0.0in}
+\setlength{\textwidth}{16cm}
+\pagestyle{fancy}
+\lhead{} 
+\chead{} 
+\rhead{} 
+\lfoot{} 
+\cfoot{\footnotesize{Page \thepage \ of \pageref{finalpage} -- \titlehd \ (\examcode)}} 
+\rfoot{}
+
+% DEPRECATED: ANU Exams Office mandated margins and footer style
+%\setlength{\topmargin}{0cm}
+%\setlength{\textheight}{9.25in}
+%\setlength{\oddsidemargin}{0.0in}
+%\setlength{\evensidemargin}{0.0in}
+%\setlength{\textwidth}{16cm}
+%\pagestyle{fancy}
+%\lhead{} %left of the header
+%\chead{} %center of the header
+%\rhead{} %right of the header
+%\lfoot{} %left of the footer
+%\cfoot{} %center of the footer
+%\rfoot{Page \ \thepage \ of \ \pageref{finalpage} \\
+%       \texttt{\examcode}} %Print the page number in the right footer
+
+\renewcommand{\headrulewidth}{0pt} %Do not print a rule below the header
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+% Title page
+
+\begin{center}
+%\vspace{5cm}
+\large\textbf{\institution}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\textit{ \examtype -- \examdate}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+\large\textbf{\titlehd}
+\end{center}
+
+\begin{center}
+\large\textbf{\examcode}
+\end{center}
+\vspace{4cm}
+
+\begin{center}
+\textit{Writing Time:  \writetime}
+\end{center}
+
+% End title page
+
+\newpage
+\noindent{\textbf{Section 1: True or False [10 points]}\\\\}
+\noindent Write {\textbf T} if the statement is true. If the statement is false, write {\textbf F}.
+
+\noindent 1. {\textbf F} \\
+\noindent 2. {\textbf T} \\
+\noindent 3. {\textbf F} \\
+\noindent 4. {\textbf T} \\
+\noindent 5. {\textbf F} \\
+\noindent 6. {\textbf T} \\
+\noindent 7. {\textbf F} \\
+\noindent 8. {\textbf F} \\
+\noindent 9. {\textbf T} \\
+\noindent 10. {\textbf T}
+
+
+
+\end{document}

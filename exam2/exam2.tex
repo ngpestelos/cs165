@@ -105,11 +105,13 @@
 \noindent{\textbf{Section 2: Functional Dependencies [10 points]}}
 
 \vskip.10in
-\noindent Given this relation for keeping a history of orders made by customers:
+\noindent Given a relation for keeping the history of orders made by customers:
 
 \begin{quote}
-$Orders(custid, custname, address, telephone, email, ordernum, orderdate, itemnum, itemname, \\sellingprice, quantity)$
+$Orders(custid, custname, address, zipcode, telephone, email, ordernum, orderdate, itemnum, itemname, \\sellingprice, quantity, supplier, suppliertaxstatus, suppliertin)$
 \end{quote}
+
+\noindent Customers can place Orders for Items distributed by Suppliers. A Supplier has a Tax Identification Number and is designated as a VAT- or non-VAT- taxpayer).
 
 \begin{quote}
 \item $i.$ What are the functional dependencies for this relation?
@@ -180,7 +182,7 @@ $v.$ After $iv$, draw the B-tree after inserting 32.
 \begin{quote}
 $i.$ What are benefits to having shared locks? \\
 $ii.$ What does a scheduler do and what is scheduling latency? \\
-$iii.$ What is throughput and what are ways to increase it? \
+$iii.$ What is throughput and what are ways to increase it? \\
 $iv.$ What are different ways for a disk to fail? \\
 $v.$ What are the usual tradeoffs to consider when normalizing relations?
 \end{quote}

@@ -90,6 +90,7 @@
 \noindent{\textbf{Section 1: True or False [10 points]}\\\\}
 \noindent Write {\textbf T} if the statement is true. If the statement is false, write {\textbf F}.
 
+\vskip.10in
 \noindent 1. {\textbf F} \\
 \noindent 2. {\textbf T} \\
 \noindent 3. {\textbf F} \\
@@ -101,6 +102,31 @@
 \noindent 9. {\textbf T} \\
 \noindent 10. {\textbf T}
 
+\vskip.35in
+\noindent{\textbf{Section 2: Functional Dependencies [10 points]}}
 
+\vskip.10in
+\noindent {\textit i.} Functional dependencies:
+
+\begin{itemize}
+\item $custid \rightarrow custname$
+\item $custid \rightarrow address$
+\item $address \rightarrow zipcode$
+\item $custid \rightarrow email$
+\item $ordernum \rightarrow orderdate$
+\item $itemnum \rightarrow itemname$
+\item $supplier \rightarrow suppliertin$
+\item $suppliertin \rightarrow suppliertaxstatus$
+\end{itemize}
+
+\noindent {\textit ii.} Decomposition:
+
+\begin{itemize}
+\item $Customers(custid, custname, address, zipcode, telephone, email)$
+\item $Order(custid, ordernum, orderdate)$
+\item $OrderItems(ordernum, itemnum, quantity)$
+\item $Items(itemnum, itemname, sellingprice, supplier)$
+\item $Suppliers(supplier, suppliertaxstatus, suppliertin)$
+\end{itemize}
 
 \end{document}

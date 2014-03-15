@@ -129,4 +129,171 @@
 \item $Suppliers(supplier, suppliertaxstatus, suppliertin)$
 \end{itemize}
 
+\newpage
+
+\noindent{\textbf{Section 3: Concurrency [10 points]}}
+
+\vskip.10in
+\noindent Precedence for A:
+
+\begin{itemize}
+\item $T_2 < T_1 (r_2 < w_1)$
+\item $T_3 < T_1 (r_3 < w_1)$
+\end{itemize}
+
+\vskip.10in
+\noindent Precedence for B:
+
+\begin{itemize}
+\item $T_1 < T_2 (r_1 < w_2)$
+\item $T_4 < T_2 (r_4 < w_2)$
+\end{itemize}
+
+\vskip.10in
+\noindent There exists a cycle in the schedule, thus it is not conflict-serializable.
+
+\vskip.35in
+\noindent{\textbf{Section 4: Index Structures [10 points]}}
+
+\vskip.10in
+\noindent After deleting 7:
+
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[
+  rectangle split,
+  rectangle split horizontal,
+  rectangle split ignore empty parts,
+  draw ]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=70mm]
+\tikzstyle{level 2}=[sibling distance=19mm]
+\node {13} [->]
+  child {node {5}
+    child {node {2 \nodepart{two} 3}}
+    child {node {5 \nodepart{two} 11}}
+  }
+    child {node {23 \nodepart{two} 31 \nodepart{three} 43}
+    child {node {13 \nodepart{two} 17 \nodepart{three} 19}}
+    child {node {23 \nodepart{two} 29}}
+    child {node {31 \nodepart{two} 37 \nodepart{three} 41}}
+    child {node {43 \nodepart{two} 47}}
+  }
+;
+\end{tikzpicture}
+\end{center}
+
+\vskip.10in
+\noindent After deleting 17:
+
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[
+  rectangle split,
+  rectangle split horizontal,
+  rectangle split ignore empty parts,
+  draw ]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=70mm]
+\tikzstyle{level 2}=[sibling distance=19mm]
+\node {13} [->]
+  child {node {5}
+    child {node {2 \nodepart{two} 3}}
+    child {node {5 \nodepart{two} 11}}
+  }
+    child {node {23 \nodepart{two} 31 \nodepart{three} 43}
+    child {node {13 \nodepart{three} 19}}
+    child {node {23 \nodepart{two} 29}}
+    child {node {31 \nodepart{two} 37 \nodepart{three} 41}}
+    child {node {43 \nodepart{two} 47}}
+  }
+;
+\end{tikzpicture}
+\end{center}
+
+\vskip.10in
+\noindent After deleting 43:
+
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[
+  rectangle split,
+  rectangle split horizontal,
+  rectangle split ignore empty parts,
+  draw ]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=70mm]
+\tikzstyle{level 2}=[sibling distance=19mm]
+\node {13} [->]
+  child {node {5}
+    child {node {2 \nodepart{two} 3}}
+    child {node {5 \nodepart{two} 11}}
+  }
+    child {node {23 \nodepart{two} 31 \nodepart{three} 41}
+    child {node {13 \nodepart{three} 19}}
+    child {node {23 \nodepart{two} 29}}
+    child {node {31 \nodepart{two} 37}}
+    child {node {41 \nodepart{two} 47}}
+  }
+;
+\end{tikzpicture}
+\end{center}
+
+\newpage
+
+\noindent After inserting 51:
+
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[
+  rectangle split,
+  rectangle split horizontal,
+  rectangle split ignore empty parts,
+  draw ]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=70mm]
+\tikzstyle{level 2}=[sibling distance=19mm]
+\node {13} [->]
+  child {node {5}
+    child {node {2 \nodepart{two} 3}}
+    child {node {5 \nodepart{two} 11}}
+  }
+    child {node {23 \nodepart{two} 31 \nodepart{three} 41}
+    child {node {13 \nodepart{three} 19}}
+    child {node {23 \nodepart{two} 29}}
+    child {node {31 \nodepart{two} 37}}
+    child {node {41 \nodepart{two} 47 \nodepart{three} 51}}
+  }
+;
+\end{tikzpicture}
+\end{center}
+
+\vskip.10in
+\noindent After inserting 32:
+
+\begin{center}
+\begin{tikzpicture}
+\tikzstyle{bplus}=[
+  rectangle split,
+  rectangle split horizontal,
+  rectangle split ignore empty parts,
+  draw ]
+\tikzstyle{every node}=[bplus]
+\tikzstyle{level 1}=[sibling distance=70mm]
+\tikzstyle{level 2}=[sibling distance=19mm]
+\node {13} [->]
+  child {node {5}
+    child {node {2 \nodepart{two} 3}}
+    child {node {5 \nodepart{two} 11}}
+  }
+    child {node {23 \nodepart{two} 31 \nodepart{three} 41}
+    child {node {13 \nodepart{three} 19}}
+    child {node {23 \nodepart{two} 29}}
+    child {node {31 \nodepart{two} 32 \nodepart{three} 37}}
+    child {node {41 \nodepart{two} 47}}
+  }
+;
+\end{tikzpicture}
+\end{center}
+
 \end{document}

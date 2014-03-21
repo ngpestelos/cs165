@@ -123,9 +123,10 @@
 
 \begin{itemize}
 \item $Customers(custid, custname, address, zipcode, telephone, email)$
-\item $Order(custid, ordernum, orderdate)$
+\item $Orders(custid, ordernum, orderdate)$
 \item $OrderItems(ordernum, itemnum, quantity)$
-\item $Items(itemnum, itemname, sellingprice, supplier)$
+\item $Items(itemnum, itemname, sellingprice)$
+\item $ItemsSoldBy(itemnum, supplier)$
 \item $Suppliers(supplier, suppliertaxstatus, suppliertin)$
 \end{itemize}
 
@@ -280,7 +281,7 @@
   draw ]
 \tikzstyle{every node}=[bplus]
 \tikzstyle{level 1}=[sibling distance=70mm]
-\tikzstyle{level 2}=[sibling distance=19mm]
+\tikzstyle{level 2}=[sibling distance=20mm]
 \node {13} [->]
   child {node {5}
     child {node {2 \nodepart{two} 3}}
@@ -290,7 +291,7 @@
     child {node {13 \nodepart{three} 19}}
     child {node {23 \nodepart{two} 29}}
     child {node {31 \nodepart{two} 32 \nodepart{three} 37}}
-    child {node {41 \nodepart{two} 47}}
+    child {node {41 \nodepart{two} 47 \nodepart{three} 51}}
   }
 ;
 \end{tikzpicture}

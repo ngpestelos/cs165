@@ -297,4 +297,39 @@
 \end{tikzpicture}
 \end{center}
 
+\vskip.35in
+\noindent{\textbf{Section 5: Essay [10 points]}}
+
+\vskip.10in
+\noindent $i.$ What are the benefits to having shared locks? \\
+
+\noindent {\textbf{Answer:}} Having shared locks means having more transactions can read the same database object. Think of the database as a blackboard and there is a teacher (a transaction) who writes to the blackboard. Also, there are students (another type of transaction) who read from the blackboard. In this example, if students are reading the blackboard (shared locks), the teacher doesn't write.
+
+\vskip.10in
+\noindent $ii.$ What does a scheduler do and what is scheduling latency? \\
+
+\noindent {\textbf{Answer:}} Think of a scheduler as an air-traffic controller. The scheduler is responsible for coordinating concurrent transactions, giving them permission to read or write database objects. Scheduling latency refers to the time it takes before a read or write action is performed after it has been scheduled.
+
+\vskip.10in
+\noindent $iii.$ What is throughput and what are ways to increase it? \\
+
+\noindent {\textbf{Answer:}} Throughput is the number of read or write requests performed per unit time. One way to increase throughput is to spread the data and queries across multiple disks.
+
+\vskip.10in
+\noindent $iv.$ What are different ways for disks to fail? \\
+
+\noindent {\textbf{Answer:}} There are different categories of disk failure. One of them is what's commonly referred to as a bad sector (part of the track is unreadable). A more severe disk failure is what is called a media failure (the whole disk is unusable).
+
+\vskip.10in
+\noindent $v.$ What are the usual tradeoffs to consider when normalizing relations?
+
+\noindent {\textbf{Answer:}} When normalizing, the database designer needs to consider the complexity of the resulting SQL query that would need to be written to access a normalized database. A rule of thumb when normalizing is determining if the tables are read or write intensive. Perhaps it is reasonable to store duplicate columns, if it would make the queries much more simpler.
+
+\begin{center}
+\vspace{3cm}
+\textit{\lastwords}
+\end{center}
+
+\label{finalpage}
+
 \end{document}

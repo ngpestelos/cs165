@@ -323,7 +323,7 @@
 \vskip.10in
 \noindent $v.$ What are the usual tradeoffs to consider when normalizing relations?
 
-\noindent {\textbf{Answer:}} When normalizing, the database designer needs to consider the complexity of the resulting SQL query that would need to be written to access a normalized database. A rule of thumb when normalizing is determining if the tables are read or write intensive. Perhaps it is reasonable to store duplicate columns, if it would make the queries much more simpler.
+\noindent {\textbf{Answer:}} (1) Space (reduce columns and add tables), (2) Integrity (preserve data consistency during insert, update, and delete; increases schema complexity), and (3) Look-up time (more JOINs; paid-up lookup cost).
 
 \begin{center}
 \vspace{3cm}
